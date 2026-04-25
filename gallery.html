@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery – Global Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- ============================================================
+     CSS SECTION
+     ============================================================ -->
+<style>
+/* ── Tokens ─────────────────────────────────────────────── */
+:root{
+  --navy:     #1a2340;
+  --navy-mid: #253060;
+  --navy-lt:  #2d3f6e;
+  --gold:     #e8a020;
+  --gold-dk:  #c8870a;
+  --gold-pl:  #fef3e2;
+  --white:    #ffffff;
+  --cream:    #faf8f4;
+  --off:      #f4f5f9;
+  --border:   #e5e7eb;
+  --text:     #1e2535;
+  --muted:    #64748b;
+  --r:        12px;
+  --sh-sm:    0 2px 12px rgba(0,0,0,.07);
+  --sh-md:    0 10px 36px rgba(0,0,0,.12);
+  --sh-lg:    0 24px 64px rgba(0,0,0,.17);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.65;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+
+/* ── Utility ────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 24px;border-radius:7px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .25s;border:2px solid transparent;font-family:'DM Sans',sans-serif}
+.btn-gold{background:var(--gold);color:var(--navy)}.btn-gold:hover{background:var(--gold-dk);transform:translateY(-1px)}
+.btn-navy{background:var(--navy);color:var(--white)}.btn-navy:hover{background:var(--navy-lt)}
+.btn-outline{background:transparent;border-color:var(--white);color:var(--white)}.btn-outline:hover{background:rgba(255,255,255,.12)}
+
+.sec-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gold-pl);color:var(--gold-dk);font-size:.72rem;font-weight:700;padding:5px 13px;border-radius:99px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.3rem);color:var(--navy);line-height:1.18;margin-bottom:10px}
+.sec-sub{color:var(--muted);font-size:.94rem;line-height:1.75}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:translate(0)}
+
+/* ── NAVBAR ─────────────────────────────────────────────── */
+.navbar{position:sticky;top:0;z-index:1000;background:var(--white);box-shadow:0 1px 20px rgba(0,0,0,.08);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px}
+.navbar-brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--navy)}
+.logo-icon{width:38px;height:38px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem}
+.navbar-links{display:flex;gap:26px;align-items:center}
+.navbar-links a{font-size:1rem;font-weight:700;color:var(--text);transition:color .2s;font-family:sans-serif}
+.navbar-links a:hover,.navbar-links a.active{color:var(--gold-dk)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:var(--navy);border-radius:2px;transition:.3s}
+.mobile-menu{display:none;flex-direction:column;background:var(--white);box-shadow:0 8px 20px rgba(0,0,0,.1);padding:16px 5%;gap:14px;position:absolute;top:64px;left:0;right:0;z-index:999}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-weight:500;color:var(--text);font-size:1rem}
+
+/* ── HERO ───────────────────────────────────────────────── */
+.gallery-hero{
+  position:relative;
+  min-height:480px;
+  background:var(--navy);
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://picsum.photos/seed/school1/1400/600') center/cover no-repeat;
+  opacity:.18;
+}
+.hero-geo{
+  position:absolute;right:-80px;top:-80px;
+  width:500px;height:500px;
+  border:60px solid rgba(232,160,32,.08);
+  border-radius:50%;
+}
+.hero-geo2{
+  position:absolute;right:60px;top:60px;
+  width:260px;height:260px;
+  border:30px solid rgba(232,160,32,.12);
+  border-radius:50%;
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:60px 5%;
+  max-width:640px;
+}
+.hero-breadcrumb{
+  display:flex;align-items:center;gap:8px;
+  font-size:.82rem;color:rgba(255,255,255,.6);
+  margin-bottom:20px;
+}
+.hero-breadcrumb a{color:var(--gold);transition:color .2s}
+.hero-breadcrumb a:hover{color:var(--white)}
+.hero-content h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4.5vw,3.2rem);
+  color:var(--white);
+  line-height:1.15;
+  margin-bottom:16px;
+  animation:fadeUp .7s both;
+}
+.hero-content h1 em{color:var(--gold);font-style:italic}
+.hero-content p{
+  color:rgba(255,255,255,.75);
+  font-size:1rem;
+  line-height:1.7;
+  margin-bottom:28px;
+  animation:fadeUp .9s both;
+}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp 1.1s both}
+
+/* ── STATS STRIP ─────────────────────────────────────────── */
+.stats-strip{
+  background:var(--gold);
+  padding:18px 5%;
+  display:flex;justify-content:center;align-items:center;
+  gap:0;flex-wrap:wrap;
+}
+.stat-item{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 40px;
+  border-right:1px solid rgba(26,35,64,.2);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--navy);line-height:1}
+.stat-lbl{font-size:.78rem;font-weight:600;color:rgba(26,35,64,.7);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* ── FILTER BAR ──────────────────────────────────────────── */
+.filter-section{
+  padding:40px 5% 10px;
+  text-align:center;
+}
+.filter-section .sec-title{margin-bottom:6px}
+.filter-section .sec-sub{margin-bottom:28px}
+
+.filter-bar{
+  display:flex;align-items:center;justify-content:center;
+  flex-wrap:wrap;gap:10px;
+  margin-bottom:16px;
+}
+.filter-btn{
+  padding:9px 22px;
+  border-radius:99px;
+  border:2px solid var(--border);
+  background:var(--white);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:.86rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .22s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold-dk)}
+.filter-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
+
+.search-wrap{
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:36px;
+}
+.search-box{
+  display:flex;align-items:center;gap:0;
+  border:2px solid var(--border);
+  border-radius:99px;
+  overflow:hidden;
+  transition:border-color .2s;
+  background:var(--white);
+}
+.search-box:focus-within{border-color:var(--gold)}
+.search-box input{
+  padding:10px 20px;
+  border:none;outline:none;
+  font-family:'DM Sans',sans-serif;
+  font-size:.9rem;
+  color:var(--text);
+  width:260px;
+  background:transparent;
+}
+.search-box button{
+  padding:10px 20px;
+  background:var(--navy);
+  border:none;color:var(--gold);
+  cursor:pointer;font-size:.95rem;
+  transition:background .2s;
+}
+.search-box button:hover{background:var(--navy-lt)}
+
+/* ── MASONRY GALLERY ─────────────────────────────────────── */
+.gallery-section{
+  padding:0 5% 60px;
+}
+
+.masonry-grid{
+  column-count:3;
+  column-gap:16px;
+}
+.gallery-item{
+  break-inside:avoid;
+  margin-bottom:16px;
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  background:var(--off);
+}
+.gallery-item img{
+  width:100%;
+  display:block;
+  transition:transform .5s ease;
+}
+.gallery-item:hover img{transform:scale(1.06)}
+.gallery-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(26,35,64,.85) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity .3s;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;
+  padding:18px;
+}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.overlay-cat{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--gold);
+  color:var(--navy);
+  font-size:.7rem;font-weight:700;
+  padding:4px 10px;border-radius:99px;
+  text-transform:uppercase;letter-spacing:.4px;
+  margin-bottom:6px;
+}
+.overlay-caption{
+  color:var(--white);
+  font-size:.9rem;font-weight:600;
+  line-height:1.3;
+}
+.overlay-zoom{
+  position:absolute;top:14px;right:14px;
+  width:36px;height:36px;
+  background:rgba(255,255,255,.95);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--navy);font-size:.85rem;
+  opacity:0;transform:scale(.7);
+  transition:all .25s;
+}
+.gallery-item:hover .overlay-zoom{opacity:1;transform:scale(1)}
+
+/* Gradient card heights */
+.gallery-item.tall{height:420px}
+.gallery-item.wide{height:280px}
+.gallery-item.normal{height:240px}
+
+/* Gradient background fill */
+.gi-bg{
+  position:absolute;inset:0;
+  transition:transform .5s ease;
+}
+.gallery-item:hover .gi-bg{transform:scale(1.05)}
+
+/* Center icon */
+.gi-icon-wrap{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;
+  color:rgba(255,255,255,.2);
+  pointer-events:none;
+  transition:transform .4s ease,color .3s;
+}
+.gallery-item:hover .gi-icon-wrap{
+  color:rgba(255,255,255,.08);
+  transform:scale(1.3) rotate(8deg);
+}
+
+/* overlay always visible at bottom */
+.gallery-overlay.always{opacity:1}
+
+/* ── VIDEO HIGHLIGHTS ────────────────────────────────────── */
+.video-section{
+  background:var(--navy);
+  padding:70px 5%;
+}
+.video-section .sec-tag{background:rgba(232,160,32,.15);color:var(--gold)}
+.video-section .sec-title{color:var(--white)}
+.video-section .sec-sub{color:rgba(255,255,255,.6)}
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin-top:36px;
+}
+.video-card{
+  border-radius:var(--r);
+  overflow:hidden;
+  background:var(--navy-mid);
+  transition:transform .3s,box-shadow .3s;
+  cursor:pointer;
+}
+.video-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+.video-thumb{
+  position:relative;
+  height:180px;
+  overflow:hidden;
+}
+.video-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.video-card:hover .video-thumb img{transform:scale(1.07)}
+.vt-icon{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;color:rgba(255,255,255,.2);
+  pointer-events:none;
+}
+.play-btn{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.play-circle{
+  width:54px;height:54px;
+  background:rgba(232,160,32,.92);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--navy);
+  font-size:1.1rem;
+  padding-left:4px;
+  transition:transform .25s,background .25s;
+}
+.video-card:hover .play-circle{transform:scale(1.12);background:var(--gold)}
+.video-info{padding:18px}
+.video-badge{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:99px;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  margin-bottom:8px;
+}
+.badge-cultural{background:rgba(168,85,247,.15);color:#a855f7}
+.badge-sports{background:rgba(34,197,94,.15);color:#16a34a}
+.badge-academic{background:rgba(59,130,246,.15);color:#2563eb}
+.video-info h3{color:var(--white);font-size:1rem;font-weight:600;margin-bottom:5px}
+.video-info p{color:rgba(255,255,255,.55);font-size:.82rem}
+
+/* ── SUBMIT PHOTO CTA ────────────────────────────────────── */
+.submit-section{
+  background:var(--gold-pl);
+  padding:60px 5%;
+  text-align:center;
+}
+.submit-inner{
+  max-width:580px;margin:0 auto;
+}
+.submit-icon{
+  width:64px;height:64px;
+  background:var(--gold);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;color:var(--navy);
+  margin:0 auto 20px;
+}
+.submit-section .sec-title{margin-bottom:10px}
+.submit-section .sec-sub{margin-bottom:28px}
+.submit-section .sec-sub span{color:var(--gold-dk);font-weight:600}
+.upload-zone{
+  border:2px dashed var(--gold);
+  border-radius:var(--r);
+  padding:36px 24px;
+  background:rgba(232,160,32,.06);
+  margin-bottom:20px;
+  cursor:pointer;
+  transition:background .2s;
+}
+.upload-zone:hover{background:rgba(232,160,32,.12)}
+.upload-zone i{font-size:2rem;color:var(--gold-dk);margin-bottom:10px}
+.upload-zone p{color:var(--muted);font-size:.9rem}
+.upload-zone span{color:var(--gold-dk);font-weight:600;cursor:pointer}
+.submit-form{display:flex;flex-direction:column;gap:12px;text-align:left}
+.submit-form input,.submit-form select{
+  padding:11px 16px;
+  border:2px solid var(--border);
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.9rem;color:var(--text);
+  background:var(--white);
+  outline:none;transition:border-color .2s;
+}
+.submit-form input:focus,.submit-form select:focus{border-color:var(--gold)}
+.submit-btn-wrap{text-align:center;margin-top:6px}
+
+/* ── LIGHTBOX ────────────────────────────────────────────── */
+.lightbox{
+  position:fixed;inset:0;
+  background:rgba(10,15,30,.95);
+  z-index:10000;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(8px);
+}
+.lightbox.open{display:flex}
+.lightbox-inner{
+  position:relative;
+  max-width:900px;width:100%;
+  animation:lbIn .3s ease;
+}
+@keyframes lbIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+.lightbox-img{
+  width:100%;border-radius:var(--r);
+  max-height:80vh;object-fit:contain;
+  box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+.lb-caption{
+  margin-top:16px;text-align:center;
+}
+.lb-caption .overlay-cat{margin:0 auto 8px}
+.lb-caption h3{color:var(--white);font-size:1.1rem;font-weight:600}
+.lb-close{
+  position:absolute;top:-16px;right:-16px;
+  width:40px;height:40px;
+  background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--navy);font-size:1rem;cursor:pointer;
+  transition:transform .2s;
+}
+.lb-close:hover{transform:scale(1.1) rotate(90deg)}
+.lb-prev,.lb-next{
+  position:fixed;
+  top:50%;transform:translateY(-50%);
+  width:48px;height:48px;
+  background:rgba(255,255,255,.1);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);font-size:1.1rem;
+  cursor:pointer;
+  transition:background .2s;
+  border:1px solid rgba(255,255,255,.2);
+}
+.lb-prev{left:16px}.lb-next{right:16px}
+.lb-prev:hover,.lb-next:hover{background:var(--gold);color:var(--navy)}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer{background:var(--navy);color:rgba(255,255,255,.75);padding:40px 5% 24px;display:flex;flex-direction:column;gap:24px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.footer-brand h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:10px}
+.footer-brand p{font-size:.88rem;line-height:1.7}
+.footer-col h4{color:var(--white);font-weight:600;margin-bottom:14px;font-size:.95rem}
+.footer-col ul li{margin-bottom:8px}
+.footer-col ul li a{font-size:.88rem;color:rgba(255,255,255,.65);transition:color .2s}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;font-size:.83rem;color:rgba(255,255,255,.45)}
+
+/* ── WHATSAPP FAB ────────────────────────────────────────── */
+.whatsapp-fab{position:fixed;bottom:24px;right:24px;z-index:999;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:transform .25s;cursor:pointer}
+.whatsapp-fab:hover{transform:scale(1.1)}
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:960px){
+  .masonry-grid{column-count:2}
+  .video-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:24px}
+  .navbar-links{display:none}
+  .hamburger{display:flex}
+}
+@media(max-width:600px){
+  .masonry-grid{column-count:1}
+  .video-grid{grid-template-columns:1fr}
+  .stats-strip{gap:0}
+  .stat-item{padding:10px 20px;border-right:none;border-bottom:1px solid rgba(26,35,64,.15)}
+  .stat-item:last-child{border-bottom:none}
+  .footer-top{grid-template-columns:1fr}
+  .search-box input{width:180px}
+  .lb-prev,.lb-next{display:none}
+}
+</style>
+</head>
+
+<!-- ============================================================
+     HTML SECTION
+     ============================================================ -->
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar-brand">
+    <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+    Global Academy
+  </a>
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="faculty.html">Faculty</a></li>
+    <li><a href="admission.html">Admissions</a></li>
+    <li><a href="campus-life.html">Campus Life</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+  </ul>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="admission.html" class="btn btn-gold" style="display:none" id="navApply">Apply Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="faculty.html">Faculty</a>
+  <a href="admission.html">Admissions</a>
+  <a href="campus-life.html">Campus Life</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="admission.html" class="btn btn-gold" style="width:fit-content">Apply Now</a>
+</div>
+
+<!-- HERO -->
+<section class="gallery-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-geo"></div>
+  <div class="hero-geo2"></div>
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fas fa-chevron-right" style="font-size:.65rem"></i>
+      <span style="color:var(--gold)">Gallery</span>
+    </div>
+    <h1>Our Campus in <em>Pictures</em></h1>
+    <p>A visual journey through the moments, milestones, and memories that make Global Academy more than just a school — a community.</p>
+    <div class="hero-actions">
+      <a href="#gallery" class="btn btn-gold"><i class="fas fa-images"></i> Browse Gallery</a>
+      <a href="#submit" class="btn btn-outline"><i class="fas fa-upload"></i> Submit a Photo</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip" id="statsStrip">
+  <div class="stat-item">
+    <div class="stat-num" data-target="500" data-suffix="+">0+</div>
+    <div class="stat-lbl">Photos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="20" data-suffix=" Yrs">0 Yrs</div>
+    <div class="stat-lbl">Of Memories</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="8" data-suffix="+">0+</div>
+    <div class="stat-lbl">Annual Events</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="1000" data-suffix="+">0+</div>
+    <div class="stat-lbl">Students Featured</div>
+  </div>
+</div>
+
+<!-- FILTER + GALLERY -->
+<section class="filter-section" id="gallery">
+  <div class="sec-tag"><i class="fas fa-camera"></i> Photo Gallery</div>
+  <h2 class="sec-title">Explore Our World</h2>
+  <p class="sec-sub">Filter by category or search by keyword to find the memories that matter most.</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All Photos</button>
+    <button class="filter-btn" data-filter="campus">Campus</button>
+    <button class="filter-btn" data-filter="classrooms">Classrooms</button>
+    <button class="filter-btn" data-filter="sports">Sports</button>
+    <button class="filter-btn" data-filter="events">Events</button>
+    <button class="filter-btn" data-filter="arts">Arts & Culture</button>
+    <button class="filter-btn" data-filter="labs">Labs</button>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search photos e.g. Annual Day, Sports..."/>
+      <button><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section">
+  <div class="masonry-grid" id="masonryGrid">
+
+    <div class="gallery-item tall reveal" data-cat="campus" data-caption="Main Building Entrance" data-bg="linear-gradient(135deg,#1a2340 0%,#2d3f6e 50%,#3a5080 100%)" data-icon="fa-building">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-building"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-building"></i> Campus</div>
+        <div class="overlay-caption">Main Building Entrance</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="sports" data-caption="Inter-School Football Championship" data-bg="linear-gradient(135deg,#14532d 0%,#16a34a 60%,#4ade80 100%)" data-icon="fa-futbol">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-futbol"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-futbol"></i> Sports</div>
+        <div class="overlay-caption">Inter-School Football Championship</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item wide reveal" data-cat="events" data-caption="Annual Day Celebration 2024" data-bg="linear-gradient(135deg,#7c2d12 0%,#c2410c 55%,#fb923c 100%)" data-icon="fa-star">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-star"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-star"></i> Events</div>
+        <div class="overlay-caption">Annual Day Celebration 2024</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="classrooms" data-caption="Smart Classroom in Action" data-bg="linear-gradient(135deg,#1e3a5f 0%,#2563eb 55%,#60a5fa 100%)" data-icon="fa-chalkboard-teacher">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-chalkboard-teacher"></i> Classrooms</div>
+        <div class="overlay-caption">Smart Classroom in Action</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item tall reveal" data-cat="arts" data-caption="Annual Cultural Dance Performance" data-bg="linear-gradient(135deg,#4a044e 0%,#9333ea 55%,#c084fc 100%)" data-icon="fa-music">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-music"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-music"></i> Arts & Culture</div>
+        <div class="overlay-caption">Annual Cultural Dance Performance</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="labs" data-caption="Science Lab — Chemistry Experiments" data-bg="linear-gradient(135deg,#164e63 0%,#0891b2 55%,#67e8f9 100%)" data-icon="fa-flask">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-flask"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-flask"></i> Labs</div>
+        <div class="overlay-caption">Science Lab — Chemistry Experiments</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item wide reveal" data-cat="campus" data-caption="Library Reading Hall" data-bg="linear-gradient(135deg,#422006 0%,#b45309 55%,#fcd34d 100%)" data-icon="fa-book">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-book"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-book"></i> Campus</div>
+        <div class="overlay-caption">Library Reading Hall</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="sports" data-caption="Basketball Court — Evening Practice" data-bg="linear-gradient(135deg,#7f1d1d 0%,#dc2626 55%,#fca5a5 100%)" data-icon="fa-basketball-ball">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-basketball-ball"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-basketball-ball"></i> Sports</div>
+        <div class="overlay-caption">Basketball Court — Evening Practice</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item tall reveal" data-cat="events" data-caption="Science Fair 2024 — Student Exhibits" data-bg="linear-gradient(135deg,#064e3b 0%,#059669 55%,#6ee7b7 100%)" data-icon="fa-microscope">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-microscope"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-microscope"></i> Events</div>
+        <div class="overlay-caption">Science Fair 2024 — Student Exhibits</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="arts" data-caption="Student Art Exhibition — Fine Arts" data-bg="linear-gradient(135deg,#831843 0%,#db2777 55%,#f9a8d4 100%)" data-icon="fa-palette">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-palette"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-palette"></i> Arts & Culture</div>
+        <div class="overlay-caption">Student Art Exhibition — Fine Arts</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="classrooms" data-caption="Computer Lab — Coding Session" data-bg="linear-gradient(135deg,#1e3a5f 0%,#0f766e 55%,#5eead4 100%)" data-icon="fa-laptop-code">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-laptop-code"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-laptop-code"></i> Classrooms</div>
+        <div class="overlay-caption">Computer Lab — Coding Session</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item wide reveal" data-cat="campus" data-caption="School Auditorium — Morning Assembly" data-bg="linear-gradient(135deg,#1a2340 0%,#44337a 55%,#7c3aed 100%)" data-icon="fa-microphone">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-microphone"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-microphone"></i> Campus</div>
+        <div class="overlay-caption">School Auditorium — Morning Assembly</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="sports" data-caption="Swimming Pool Complex" data-bg="linear-gradient(135deg,#0c4a6e 0%,#0284c7 55%,#7dd3fc 100%)" data-icon="fa-swimmer">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-swimmer"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-swimmer"></i> Sports</div>
+        <div class="overlay-caption">Swimming Pool Complex</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item tall reveal" data-cat="events" data-caption="Graduation Ceremony — Class of 2024" data-bg="linear-gradient(135deg,#3b1a08 0%,#c8870a 55%,#fcd34d 100%)" data-icon="fa-graduation-cap">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-graduation-cap"></i> Events</div>
+        <div class="overlay-caption">Graduation Ceremony — Class of 2024</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="labs" data-caption="Computer Lab — Digital Learning" data-bg="linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)" data-icon="fa-desktop">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-desktop"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-desktop"></i> Labs</div>
+        <div class="overlay-caption">Computer Lab — Digital Learning</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item wide reveal" data-cat="arts" data-caption="Music Room — Choir Practice" data-bg="linear-gradient(135deg,#2d1b69 0%,#5b21b6 55%,#a78bfa 100%)" data-icon="fa-music">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-music"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-music"></i> Arts & Culture</div>
+        <div class="overlay-caption">Music Room — Choir Practice</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="campus" data-caption="Lush Green Campus Gardens" data-bg="linear-gradient(135deg,#052e16 0%,#15803d 55%,#86efac 100%)" data-icon="fa-leaf">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-leaf"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-leaf"></i> Campus</div>
+        <div class="overlay-caption">Lush Green Campus Gardens</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+    <div class="gallery-item normal reveal" data-cat="events" data-caption="Sports Day — Athletics Track" data-bg="linear-gradient(135deg,#450a0a 0%,#b91c1c 55%,#fca5a5 100%)" data-icon="fa-running">
+      <div class="gi-bg"></div>
+      <div class="gi-icon-wrap"><i class="fas fa-running"></i></div>
+      <div class="gallery-overlay always">
+        <div class="overlay-cat"><i class="fas fa-running"></i> Events</div>
+        <div class="overlay-caption">Sports Day — Athletics Track</div>
+      </div>
+      <div class="overlay-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+
+  </div>
+
+  <!-- No results message -->
+  <div id="noResults" style="display:none;text-align:center;padding:60px 20px;">
+    <i class="fas fa-search" style="font-size:2.5rem;color:var(--border);margin-bottom:16px"></i>
+    <h3 style="color:var(--muted);font-weight:500">No photos found</h3>
+    <p style="color:var(--border);margin-top:6px;font-size:.9rem">Try a different keyword or category.</p>
+  </div>
+</section>
+
+<!-- VIDEO HIGHLIGHTS -->
+<section class="video-section" id="videos">
+  <div style="text-align:center;margin-bottom:0">
+    <div class="sec-tag"><i class="fas fa-video"></i> Video Highlights</div>
+    <h2 class="sec-title">Relive the Best Moments</h2>
+    <p class="sec-sub" style="max-width:500px;margin:0 auto">Watch our event recaps, campus tour, and student showcases.</p>
+  </div>
+  <div class="video-grid">
+
+    <div class="video-card reveal">
+      <div class="video-thumb" style="background:linear-gradient(135deg,#7c2d12,#c2410c,#fb923c)">
+        <div class="vt-icon"><i class="fas fa-theater-masks"></i></div>
+        <div class="play-btn"><div class="play-circle"><i class="fas fa-play"></i></div></div>
+      </div>
+      <div class="video-info">
+        <span class="video-badge badge-cultural">Cultural</span>
+        <h3>Annual Day 2024 — Full Highlights</h3>
+        <p>Dance, drama, music & prize distribution recap</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-thumb" style="background:linear-gradient(135deg,#14532d,#16a34a,#4ade80)">
+        <div class="vt-icon"><i class="fas fa-trophy"></i></div>
+        <div class="play-btn"><div class="play-circle"><i class="fas fa-play"></i></div></div>
+      </div>
+      <div class="video-info">
+        <span class="video-badge badge-sports">Sports</span>
+        <h3>Sports Day 2024 — Championship Moments</h3>
+        <p>Athletics, football finals & medal ceremony</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-thumb" style="background:linear-gradient(135deg,#1a2340,#253060,#2d3f6e)">
+        <div class="vt-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="play-btn"><div class="play-circle"><i class="fas fa-play"></i></div></div>
+      </div>
+      <div class="video-info">
+        <span class="video-badge badge-academic">Academic</span>
+        <h3>Virtual Campus Tour — 2025</h3>
+        <p>A walkthrough of our state-of-the-art facilities</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUBMIT PHOTO CTA -->
+<section class="submit-section" id="submit">
+  <div class="submit-inner reveal">
+    <div class="submit-icon"><i class="fas fa-camera"></i></div>
+    <h2 class="sec-title">Share Your Memory</h2>
+    <p class="sec-sub">Are you a student, parent, or alumnus? <span>Submit your photos</span> and become part of our gallery. The best submissions get featured each month.</p>
+    <div class="upload-zone" id="uploadZone">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <p>Drag & drop your photos here, or <span>click to browse</span></p>
+      <p style="font-size:.78rem;margin-top:6px;color:#94a3b8">JPG, PNG up to 10MB · Max 5 photos</p>
+    </div>
+    <div class="submit-form">
+      <input type="text" placeholder="Your Name" id="submitterName"/>
+      <input type="text" placeholder="Your Role — Student / Parent / Alumni" id="submitterRole"/>
+      <select id="photoCategory">
+        <option value="" disabled selected>Select Category</option>
+        <option>Campus</option>
+        <option>Classrooms</option>
+        <option>Sports</option>
+        <option>Events</option>
+        <option>Arts & Culture</option>
+        <option>Labs</option>
+      </select>
+      <input type="text" placeholder="Photo Caption (optional)"/>
+    </div>
+    <div class="submit-btn-wrap" style="margin-top:18px">
+      <button class="btn btn-navy" id="submitPhotoBtn" style="padding:12px 36px;font-size:.95rem"><i class="fas fa-paper-plane"></i> Submit for Review</button>
+    </div>
+    <p id="submitMsg" style="display:none;text-align:center;color:var(--gold-dk);font-weight:600;margin-top:16px">
+      <i class="fas fa-check-circle"></i> Thank you! Your photo has been submitted for review.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>Global Academy</h3>
+      <p>Nurturing excellence, building character, and shaping the leaders of tomorrow since 2005.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="faculty.html">Faculty</a></li>
+        <li><a href="admission.html">Admissions</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Campus Life</h4>
+      <ul>
+        <li><a href="campus-life.html">Overview</a></li>
+        <li><a href="campus-life.html#sports">Sports</a></li>
+        <li><a href="campus-life.html#arts">Arts & Clubs</a></li>
+        <li><a href="campus-life.html#events">Events</a></li>
+        <li><a href="campus-life.html#transport">Transport</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">123 Academy Road</a></li>
+        <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+        <li><a href="mailto:info@globalacademy.edu">info@globalacademy.edu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2025 Global Academy. All rights reserved.</div>
+</footer>
+
+<a href="https://wa.me/0708722437" class="whatsapp-fab"><i class="fab fa-whatsapp"></i></a>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lb-close" id="lbClose"><i class="fas fa-times"></i></div>
+    <img src="" alt="" class="lightbox-img" id="lbImg"/>
+    <div class="lb-caption">
+      <div class="overlay-cat" id="lbCat"></div>
+      <h3 id="lbCaption"></h3>
+    </div>
+  </div>
+  <div class="lb-prev" id="lbPrev"><i class="fas fa-chevron-left"></i></div>
+  <div class="lb-next" id="lbNext"><i class="fas fa-chevron-right"></i></div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT SECTION
+     ============================================================ -->
+<script>
+  /* ── Mobile Menu ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    const sp = hamburger.querySelectorAll('span');
+    const o  = mobileMenu.classList.contains('open');
+    sp[0].style.transform = o ? 'rotate(45deg) translate(5px,5px)' : '';
+    sp[1].style.opacity   = o ? '0' : '';
+    sp[2].style.transform = o ? 'rotate(-45deg) translate(5px,-5px)' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.querySelectorAll('span').forEach(s => { s.style.transform=''; s.style.opacity=''; });
+  }));
+
+  /* ── Navbar shadow ── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow =
+      window.scrollY > 40 ? '0 4px 28px rgba(0,0,0,.13)' : '0 1px 20px rgba(0,0,0,.08)';
+  }, { passive: true });
+
+  /* ── Scroll Reveal ── */
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+      setTimeout(() => entry.target.classList.add('in'), siblings.indexOf(entry.target) * 90);
+      revObs.unobserve(entry.target);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+  /* ── Stats Counter ── */
+  function countUp(el, target, suffix) {
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / (1400 / 16)));
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = cur + suffix;
+      if (cur >= target) clearInterval(t);
+    }, 16);
+  }
+  const statsObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('.stat-num').forEach(el => {
+        countUp(el, parseInt(el.dataset.target), el.dataset.suffix);
+      });
+      statsObs.disconnect();
+    });
+  }, { threshold: 0.5 });
+  const strip = document.getElementById('statsStrip');
+  if (strip) statsObs.observe(strip);
+
+  /* ── Filter Tabs ── */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.gallery-item');
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let visible = 0;
+    items.forEach(item => {
+      const cat     = item.dataset.cat;
+      const caption = item.dataset.caption.toLowerCase();
+      const matchCat    = activeFilter === 'all' || cat === activeFilter;
+      const matchSearch = caption.includes(search) || cat.includes(search);
+      const show = matchCat && matchSearch;
+      item.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+  /* ── Lightbox ── */
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lbImg');
+  const lbCaption = document.getElementById('lbCaption');
+  const lbCat    = document.getElementById('lbCat');
+  let visibleItems = [];
+  let currentIdx = 0;
+
+  function openLightbox(item) {
+    visibleItems = [...items].filter(i => i.style.display !== 'none');
+    currentIdx = visibleItems.indexOf(item);
+    showLb(currentIdx);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLb(idx) {
+    const item = visibleItems[idx];
+    const bg   = item.dataset.bg;
+    // Show gradient preview in lightbox
+    lbImg.style.display = 'none';
+    let lbGrad = document.getElementById('lbGrad');
+    if (!lbGrad) {
+      lbGrad = document.createElement('div');
+      lbGrad.id = 'lbGrad';
+      lbGrad.style.cssText = 'width:100%;height:420px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:5rem;color:rgba(255,255,255,.3);';
+      lbImg.parentElement.insertBefore(lbGrad, lbImg);
+    }
+    const iconClass = item.querySelector('.gi-icon-wrap i').className;
+    lbGrad.style.background = bg;
+    lbGrad.innerHTML = `<i class="${iconClass}"></i>`;
+    lbCaption.textContent = item.dataset.caption;
+    lbCat.innerHTML = item.querySelector('.overlay-cat').innerHTML;
+  }
+
+  items.forEach(item => {
+    item.addEventListener('click', () => openLightbox(item));
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLb(); });
+
+  document.getElementById('lbPrev').addEventListener('click', e => {
+    e.stopPropagation();
+    currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+    showLb(currentIdx);
+  });
+
+  document.getElementById('lbNext').addEventListener('click', e => {
+    e.stopPropagation();
+    currentIdx = (currentIdx + 1) % visibleItems.length;
+    showLb(currentIdx);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
+    if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
+  });
+
+  function closeLb() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Submit Photo Form ── */
+  document.getElementById('uploadZone').addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+    input.click();
+  });
+
+  document.getElementById('submitPhotoBtn').addEventListener('click', () => {
+    const name = document.getElementById('submitterName').value.trim();
+    const role = document.getElementById('submitterRole').value.trim();
+    const cat  = document.getElementById('photoCategory').value;
+    if (!name || !role || !cat) {
+      ['submitterName','submitterRole','photoCategory'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.style.borderColor = '#ef4444'; setTimeout(() => el.style.borderColor = '', 2000); }
+      });
+      return;
+    }
+    document.getElementById('submitPhotoBtn').style.display = 'none';
+    document.getElementById('submitMsg').style.display = 'block';
+  });
+
+  /* ── Apply gradient backgrounds to gallery items ── */
+  document.querySelectorAll('.gallery-item[data-bg]').forEach(item => {
+    const bg = item.querySelector('.gi-bg');
+    if (bg) bg.style.background = item.dataset.bg;
+  });
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('click', () => {
+      alert('Video player coming soon!');
+    });
+  });
+</script>
+</body>
+</html>
