@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admissions – Global Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- ============================================================
+     CSS SECTION
+     ============================================================ -->
+<style>
+  :root{
+    --navy:#1a2340;--navy-mid:#253060;--navy-lt:#2d3f6e;
+    --gold:#e8a020;--gold-dk:#c8870a;--gold-pale:#fef3e2;
+    --white:#ffffff;--off:#f7f8fc;--border:#e5e7eb;
+    --text:#1e2535;--muted:#6b7280;
+    --green:#16a34a;--red:#dc2626;
+    --r:12px;
+    --sh-sm:0 2px 10px rgba(0,0,0,.07);
+    --sh-md:0 8px 32px rgba(0,0,0,.12);
+    --sh-lg:0 20px 60px rgba(0,0,0,.16);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  a{text-decoration:none;color:inherit}
+  ul{list-style:none}
+
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 26px;border-radius:7px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .25s;border:2px solid transparent;font-family:'DM Sans',sans-serif}
+  .btn-gold{background:var(--gold);color:var(--navy)}.btn-gold:hover{background:var(--gold-dk);transform:translateY(-1px)}
+  .btn-navy{background:var(--navy);color:var(--white)}.btn-navy:hover{background:var(--navy-lt)}
+  .btn-outline{background:transparent;border-color:var(--white);color:var(--white)}.btn-outline:hover{background:rgba(255,255,255,.15)}
+  .btn-ghost{background:transparent;border-color:var(--border);color:var(--text)}.btn-ghost:hover{border-color:var(--gold);color:var(--gold-dk)}
+  .btn-lg{padding:14px 34px;font-size:1rem}
+  .btn-full{width:100%;justify-content:center}
+
+  /* NAVBAR */
+  .navbar{position:sticky;top:0;z-index:1000;background:var(--white);box-shadow:0 2px 16px rgba(0,0,0,.08);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .navbar-brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--navy)}
+  .logo-icon{width:38px;height:38px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem}
+  .navbar-links{display:flex;gap:26px;align-items:center}
+  .navbar-links a{font-size:1rem;font-weight:700;color:var(--text);transition:color .2s;font-family: sans-serif;}
+  .navbar-links a:hover,.navbar-links a.active{color:var(--gold-dk)}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+  .hamburger span{width:24px;height:2px;background:var(--navy);border-radius:2px;transition:.3s}
+  .mobile-menu{display:none;flex-direction:column;background:var(--white);box-shadow:0 8px 20px rgba(0,0,0,.1);padding:16px 5%;gap:14px;position:absolute;top:64px;left:0;right:0;z-index:999}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{font-weight:500;color:var(--text);font-size:1rem}
+
+  /* HERO */
+  .adm-hero{position:relative;background:var(--navy);padding:90px 5% 0;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
+  .adm-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 90% at 90% 50%,rgba(232,160,32,.13) 0%,transparent 70%);pointer-events:none}
+  .hero-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.055) 1px,transparent 1px);background-size:26px 26px;pointer-events:none}
+  .adm-hero::after{content:'';position:absolute;width:5px;height:200%;background:var(--gold);opacity:.14;top:-50%;left:58%;transform:rotate(15deg);pointer-events:none}
+  .hero-left{position:relative;z-index:2;padding-bottom:70px}
+  .hero-breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:18px;background:rgba(255,255,255,.07);padding:5px 14px;border-radius:99px;border:1px solid rgba(255,255,255,.1)}
+  .hero-breadcrumb a{color:var(--gold)}
+  .hero-breadcrumb i{font-size:.62rem}
+  .hero-left h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.2rem);color:var(--white);line-height:1.15;margin-bottom:16px;animation:up .7s both}
+  .hero-left h1 span{color:var(--gold);font-style:italic}
+  .hero-left p{color:rgba(255,255,255,.6);font-size:1rem;max-width:460px;margin-bottom:30px;animation:up .9s both}
+  .hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:up 1s both}
+  .hero-deadline{display:inline-flex;align-items:center;gap:8px;margin-top:22px;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.35);color:var(--gold);padding:8px 16px;border-radius:99px;font-size:.82rem;font-weight:600}
+  .hero-right{position:relative;z-index:2}
+  .hero-img-wrap{border-radius:16px 16px 0 0;overflow:hidden;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:imgUp .9s both}
+  .hero-img-wrap img{width:100%;height:340px;object-fit:cover;filter:brightness(.85)}
+  @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes imgUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  /* STATS BAR */
+  .stats-bar{background:var(--gold);padding:24px 5%;display:grid;grid-template-columns:repeat(4,1fr)}
+  .s-item{text-align:center;padding:8px 0;position:relative}
+  .s-item+.s-item::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);height:36px;width:1px;background:rgba(26,35,64,.2)}
+  .s-item .val{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1}
+  .s-item .lbl{font-size:.76rem;color:rgba(26,35,64,.65);margin-top:3px;font-weight:500}
+
+  /* SECTION HELPERS */
+  .sec-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gold-pale);color:var(--gold-dk);font-size:.75rem;font-weight:700;padding:5px 13px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase;margin-bottom:12px}
+  .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.1rem);color:var(--navy);line-height:1.2;margin-bottom:8px}
+  .sec-sub{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* PROCESS */
+  .process{padding:80px 5%;background:var(--off)}
+  .process-inner{text-align:center;margin-bottom:56px}
+  .steps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+  .steps-grid::before{content:'';position:absolute;top:36px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--gold) 0%,rgba(232,160,32,.2) 100%);z-index:0}
+  .step-card{background:var(--white);border-radius:var(--r);padding:28px 18px;text-align:center;box-shadow:var(--sh-sm);position:relative;z-index:1;margin:0 8px;transition:transform .3s,box-shadow .3s}
+  .step-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md)}
+  .step-num{width:52px;height:52px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);border:3px solid var(--white);box-shadow:0 0 0 3px var(--navy)}
+  .step-card.active .step-num{background:var(--gold);color:var(--navy);box-shadow:0 0 0 3px var(--gold)}
+  .step-icon{font-size:1.5rem;margin-bottom:12px;color:var(--gold-dk)}
+  .step-card h3{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .step-card p{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+  /* ELIGIBILITY */
+  .eligibility{padding:80px 5%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+  .elig-left img{border-radius:14px;width:100%;height:380px;object-fit:cover;box-shadow:var(--sh-md)}
+  .grade-cards{display:flex;flex-direction:column;gap:14px;margin-top:1.5rem}
+  .grade-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh-sm);transition:border-color .25s,transform .25s}
+  .grade-card:hover{border-color:var(--gold);transform:translateX(4px)}
+  .grade-badge{width:52px;height:52px;border-radius:10px;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .grade-badge .g-num{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);line-height:1}
+  .grade-badge .g-lbl{font-size:.58rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.3px}
+  .grade-info h4{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:3px}
+  .grade-info p{font-size:.8rem;color:var(--muted)}
+  .age-pill{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:var(--gold-dk);background:var(--gold-pale);padding:2px 10px;border-radius:99px;margin-top:5px}
+
+  /* FEES */
+  .fees-section{padding:80px 5%;background:var(--off);text-align:center}
+  .fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:2rem}
+  .fee-card{background:var(--white);border-radius:16px;overflow:hidden;box-shadow:var(--sh-sm);transition:transform .3s,box-shadow .3s;border:2px solid transparent}
+  .fee-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md)}
+  .fee-card.featured{border-color:var(--gold);position:relative}
+  .popular-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:.72rem;font-weight:700;padding:4px 18px;border-radius:0 0 10px 10px;letter-spacing:.4px}
+  .fee-header{background:var(--navy);padding:28px 24px;text-align:center}
+  .fee-card.featured .fee-header{background:linear-gradient(135deg,var(--navy-mid),var(--navy-lt))}
+  .fee-header .level{font-size:.78rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+  .fee-header .grade-range{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--white)}
+  .fee-amount{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:var(--gold);line-height:1;margin-top:12px}
+  .fee-amount span{font-size:.9rem;font-weight:400;color:rgba(255,255,255,.5)}
+  .fee-body{padding:24px}
+  .fee-list{display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:22px}
+  .fee-list li{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text)}
+  .fee-list li i{color:var(--green);font-size:.8rem;flex-shrink:0}
+  .fee-list li.no i{color:var(--red)}
+  .fee-list li.no{color:var(--muted)}
+
+  /* DOCUMENTS */
+  .documents{padding:80px 5%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+  .doc-list{display:flex;flex-direction:column;gap:12px}
+  .doc-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:10px;background:var(--white);border:1px solid var(--border);box-shadow:var(--sh-sm);transition:border-color .25s}
+  .doc-item:hover{border-color:var(--gold)}
+  .doc-icon{width:42px;height:42px;border-radius:9px;background:var(--gold-pale);color:var(--gold-dk);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .doc-item h4{font-size:.9rem;font-weight:700;color:var(--navy)}
+  .doc-item p{font-size:.78rem;color:var(--muted)}
+  .doc-required{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:auto;flex-shrink:0}
+  .doc-required.must{background:#dcfce7;color:var(--green)}
+  .doc-required.opt{background:#f3f4f6;color:var(--muted)}
+  .timeline{display:flex;flex-direction:column;gap:0}
+  .tl-item{display:flex;gap:18px;padding-bottom:28px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+  .tl-dot{width:40px;height:40px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.9rem;flex-shrink:0;box-shadow:0 0 0 4px var(--gold-pale)}
+  .tl-dot.done{background:var(--green);color:var(--white)}
+  .tl-dot.active-dot{background:var(--gold);color:var(--navy)}
+  .tl-connector{flex:1;width:2px;background:var(--border);margin:4px 0}
+  .tl-content{padding-top:8px}
+  .tl-content h4{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .tl-content p{font-size:.82rem;color:var(--muted);line-height:1.55}
+  .tl-date{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:var(--gold-dk);background:var(--gold-pale);padding:3px 10px;border-radius:99px;margin-top:6px}
+
+  /* APPLICATION FORM */
+  .apply-section{padding:80px 5%;background:var(--off)}
+  .apply-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start}
+  .apply-info{position:sticky;top:90px}
+  .apply-info h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:10px}
+  .apply-info p{color:var(--muted);font-size:.93rem;margin-bottom:24px}
+  .info-points{display:flex;flex-direction:column;gap:14px}
+  .info-point{display:flex;align-items:flex-start;gap:12px}
+  .info-icon{width:38px;height:38px;border-radius:9px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;margin-top:2px}
+  .info-point h4{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:3px}
+  .info-point p{font-size:.82rem;color:var(--muted)}
+  .form-card{background:var(--white);border-radius:20px;box-shadow:var(--sh-lg);overflow:hidden}
+  .form-tabs{display:flex;background:var(--off);border-bottom:1px solid var(--border)}
+  .form-tab{flex:1;padding:14px;text-align:center;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent}
+  .form-tab.active{color:var(--navy);border-bottom-color:var(--gold);background:var(--white)}
+  .form-body{padding:32px}
+  .form-step{display:none}
+  .form-step.active{display:block}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+  .form-row.full{grid-template-columns:1fr}
+  .form-group{display:flex;flex-direction:column;gap:6px}
+  .form-group label{font-size:.8rem;font-weight:600;color:var(--navy)}
+  .form-group label .req{color:var(--red)}
+  .form-control{padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--white)}
+  .form-control:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,160,32,.12)}
+  .form-control.error{border-color:var(--red)}
+  .form-hint{font-size:.72rem;color:var(--muted);margin-top:2px}
+  .err-msg{font-size:.72rem;color:var(--red);display:none;margin-top:2px}
+  .form-control.error ~ .err-msg{display:block}
+  .form-section-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+  .form-section-title i{color:var(--gold)}
+  .check-opt{display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:8px}
+  .check-opt input{accent-color:var(--navy);margin-top:3px;cursor:pointer}
+  .check-opt span{font-size:.82rem;color:var(--muted);line-height:1.5}
+  .check-opt span a{color:var(--gold-dk);font-weight:600}
+  .form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border)}
+  .step-indicator{display:flex;gap:8px;align-items:center}
+  .step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .2s,width .2s;border:none;cursor:pointer;padding:0}
+  .step-dot.cur{background:var(--gold);width:20px;border-radius:4px}
+  .step-dot.done-dot{background:var(--green)}
+  .form-success{display:none;text-align:center;padding:40px 20px}
+  .form-success .s-icon{width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;color:var(--green)}
+  .form-success h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy);margin-bottom:8px}
+  .form-success p{color:var(--muted);font-size:.92rem;margin-bottom:16px}
+  .app-id-box{background:var(--gold-pale);border:1px solid rgba(232,160,32,.3);border-radius:8px;padding:14px 20px;display:inline-block;font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);font-weight:700;letter-spacing:2px;margin-bottom:20px}
+
+  /* FAQ */
+  .faq-section{padding:80px 5%;background:var(--white)}
+  .faq-inner{max-width:760px;margin:0 auto}
+  .faq-list{display:flex;flex-direction:column;gap:12px;margin-top:2rem}
+  .faq-item{background:var(--off);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .25s}
+  .faq-item.open{border-color:var(--gold)}
+  .faq-q{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+  .faq-q span{font-size:.93rem;font-weight:600;color:var(--navy)}
+  .faq-q i{color:var(--gold-dk);transition:transform .3s;font-size:.85rem;flex-shrink:0}
+  .faq-item.open .faq-q i{transform:rotate(180deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
+  .faq-item.open .faq-a{max-height:200px;padding:0 20px 18px}
+  .faq-a p{font-size:.88rem;color:var(--muted);line-height:1.7}
+
+  /* CTA BANNER */
+  .cta-banner{background:var(--navy);padding:70px 5%;text-align:center;position:relative;overflow:hidden}
+  .cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 100% at 50% 0%,rgba(232,160,32,.1) 0%,transparent 60%);pointer-events:none}
+  .cta-banner h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--white);margin-bottom:12px;position:relative;z-index:1}
+  .cta-banner p{color:rgba(255,255,255,.55);font-size:.95rem;margin-bottom:28px;position:relative;z-index:1}
+  .cta-banner .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+
+  /* FOOTER */
+  footer{background:var(--navy);color:rgba(255,255,255,.7);padding:40px 5% 24px}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px}
+  .footer-brand h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--white);margin-bottom:10px}
+  .footer-brand p{font-size:.88rem;line-height:1.7}
+  .footer-col h4{color:var(--white);font-weight:600;margin-bottom:14px;font-size:.92rem}
+  .footer-col ul li{margin-bottom:8px}
+  .footer-col ul li a{font-size:.88rem;color:rgba(255,255,255,.6);transition:color .2s}
+  .footer-col ul li a:hover{color:var(--gold)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.35)}
+  .whatsapp-fab{position:fixed;bottom:24px;right:24px;z-index:999;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:transform .25s}
+  .whatsapp-fab:hover{transform:scale(1.1)}
+
+  /* RESPONSIVE */
+  @media(max-width:1000px){
+    .adm-hero{grid-template-columns:1fr}.hero-right{display:none}
+    .steps-grid{grid-template-columns:1fr 1fr;gap:16px}.steps-grid::before{display:none}.step-card{margin:0}
+    .eligibility,.documents,.apply-grid{grid-template-columns:1fr}.apply-info{position:static}
+    .fee-grid{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr 1fr;gap:24px}
+    .navbar-links,.navbar-actions .btn-gold{display:none}.hamburger{display:flex}
+  }
+  @media(max-width:640px){
+    .stats-bar{grid-template-columns:1fr 1fr}
+    .form-row{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr}
+    .hero-left{padding-bottom:40px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HTML SECTION
+     ============================================================ -->
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+    Global Academy
+  </a>
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About Us</a></li>
+    <li><a href="#" class="active">Admissions</a></li>
+    <li><a href="index.html#programs">Academics</a></li>
+    <li><a href="faculty.html">Faculty</a></li>
+    <li><a href="campus-life.html">Campus Life</a></li>
+    <li><a href="index.html#contact">Contact Us</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <a href="#" class="btn btn-gold"><i class="fas fa-credit-card"></i> Pay Fees</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="admission.html">Admissions</a>
+  <a href="faculty.html">Faculty</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="#" class="btn btn-gold" style="text-align:center">Pay Fees</a>
+</div>
+
+<!-- HERO -->
+<section class="adm-hero">
+  <div class="hero-dots"></div>
+  <div class="hero-left">
+    <div class="hero-breadcrumb"><a href="index.html">Home</a><i class="fas fa-chevron-right"></i><span>Admissions</span></div>
+    <h1>Begin Your <span>Journey</span><br>at Global Academy</h1>
+    <p>Join a community of curious minds and passionate educators. Admissions open for 2025–26. Seats are limited — apply early.</p>
+    <div class="hero-btns">
+      <a href="#apply" class="btn btn-gold btn-lg"><i class="fas fa-pen"></i> Apply Now</a>
+      <a href="#process" class="btn btn-outline"><i class="fas fa-info-circle"></i> How It Works</a>
+    </div>
+    <div class="hero-deadline"><i class="fas fa-clock"></i> Application deadline: <strong>31 May 2025</strong></div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80" alt="Students"/>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="s-item"><div class="val" data-target="1000" data-sfx="+">0</div><div class="lbl">Current Students</div></div>
+  <div class="s-item"><div class="val" data-target="95"   data-sfx="%">0</div><div class="lbl">Board Pass Rate</div></div>
+  <div class="s-item"><div class="val" data-target="52"   data-sfx="+">0</div><div class="lbl">Expert Faculty</div></div>
+  <div class="s-item"><div class="val" data-target="20"   data-sfx="+">0</div><div class="lbl">Years of Excellence</div></div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner reveal">
+    <div class="sec-tag"><i class="fas fa-route"></i> Admission Process</div>
+    <h2 class="sec-title">5 Simple Steps to Enrol</h2>
+    <p class="sec-sub">Our streamlined process ensures a smooth experience from enquiry to confirmation.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal"><div class="step-num">01</div><div class="step-icon"><i class="fas fa-search"></i></div><h3>Enquire Online</h3><p>Fill the enquiry form or call our admissions desk to learn about programmes and availability.</p></div>
+    <div class="step-card reveal"><div class="step-num">02</div><div class="step-icon"><i class="fas fa-file-alt"></i></div><h3>Submit Application</h3><p>Complete the online form and upload all required documents securely.</p></div>
+    <div class="step-card active reveal"><div class="step-num">03</div><div class="step-icon"><i class="fas fa-pencil-alt"></i></div><h3>Entrance Assessment</h3><p>Attend the written assessment and interaction session at our campus.</p></div>
+    <div class="step-card reveal"><div class="step-num">04</div><div class="step-icon"><i class="fas fa-envelope-open-text"></i></div><h3>Receive Offer Letter</h3><p>Successful candidates receive a formal offer letter within 5 working days.</p></div>
+    <div class="step-card reveal"><div class="step-num">05</div><div class="step-icon"><i class="fas fa-check-circle"></i></div><h3>Pay &amp; Confirm</h3><p>Pay the registration fee online to confirm your child's seat.</p></div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY -->
+<section class="eligibility" id="eligibility">
+  <div class="elig-left reveal">
+    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700&q=80" alt="Students"/>
+  </div>
+  <div class="reveal">
+    <div class="sec-tag"><i class="fas fa-user-check"></i> Eligibility</div>
+    <h2 class="sec-title">Who Can Apply?</h2>
+    <p class="sec-sub" style="margin-bottom:0">We welcome students across all grades. Age criteria follow CBSE norms.</p>
+    <div class="grade-cards">
+      <div class="grade-card"><div class="grade-badge"><div class="g-num">1–5</div><div class="g-lbl">Grade</div></div><div class="grade-info"><h4>Primary School</h4><p>Foundation in literacy, numeracy, arts and physical education.</p><div class="age-pill"><i class="fas fa-birthday-cake"></i> Age 6 – 11 years</div></div></div>
+      <div class="grade-card"><div class="grade-badge"><div class="g-num">6–8</div><div class="g-lbl">Grade</div></div><div class="grade-info"><h4>Middle School</h4><p>Deeper subject knowledge with activity-based and collaborative learning.</p><div class="age-pill"><i class="fas fa-birthday-cake"></i> Age 11 – 14 years</div></div></div>
+      <div class="grade-card"><div class="grade-badge"><div class="g-num">9–10</div><div class="g-lbl">Grade</div></div><div class="grade-info"><h4>Secondary School</h4><p>CBSE board preparation with expert mentoring and doubt sessions.</p><div class="age-pill"><i class="fas fa-birthday-cake"></i> Age 14 – 16 years</div></div></div>
+      <div class="grade-card"><div class="grade-badge"><div class="g-num">11–12</div><div class="g-lbl">Grade</div></div><div class="grade-info"><h4>Senior Secondary</h4><p>Science, Commerce &amp; Arts streams with competitive exam coaching.</p><div class="age-pill"><i class="fas fa-birthday-cake"></i> Age 16 – 18 years</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEE STRUCTURE -->
+<section class="fees-section" id="fees">
+  <div class="reveal">
+    <div class="sec-tag"><i class="fas fa-rupee-sign"></i> Fee Structure</div>
+    <h2 class="sec-title">Transparent Fee Structure</h2>
+    <p class="sec-sub">All-inclusive annual fees. No hidden charges.</p>
+  </div>
+  <div class="fee-grid">
+    <div class="fee-card reveal">
+      <div class="fee-header"><div class="level">Primary</div><div class="grade-range">Grades 1 – 5</div><div class="fee-amount">₹42,000 <span>/ year</span></div></div>
+      <div class="fee-body">
+        <ul class="fee-list">
+          <li><i class="fas fa-check"></i> Tuition fees included</li>
+          <li><i class="fas fa-check"></i> Smart classroom access</li>
+          <li><i class="fas fa-check"></i> Sports &amp; activity sessions</li>
+          <li><i class="fas fa-check"></i> Annual day participation</li>
+          <li class="no"><i class="fas fa-times"></i> Lab fees extra</li>
+          <li class="no"><i class="fas fa-times"></i> Transport optional</li>
+        </ul>
+        <a href="#apply" class="btn btn-ghost btn-full">Apply Now</a>
+      </div>
+    </div>
+    <div class="fee-card featured reveal">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="fee-header"><div class="level">Secondary</div><div class="grade-range">Grades 6 – 10</div><div class="fee-amount">₹58,000 <span>/ year</span></div></div>
+      <div class="fee-body">
+        <ul class="fee-list">
+          <li><i class="fas fa-check"></i> Tuition fees included</li>
+          <li><i class="fas fa-check"></i> Smart classroom access</li>
+          <li><i class="fas fa-check"></i> Science &amp; Computer labs</li>
+          <li><i class="fas fa-check"></i> Sports &amp; activity sessions</li>
+          <li><i class="fas fa-check"></i> Annual day participation</li>
+          <li class="no"><i class="fas fa-times"></i> Transport optional</li>
+        </ul>
+        <a href="#apply" class="btn btn-gold btn-full">Apply Now</a>
+      </div>
+    </div>
+    <div class="fee-card reveal">
+      <div class="fee-header"><div class="level">Senior Secondary</div><div class="grade-range">Grades 11 – 12</div><div class="fee-amount">₹72,000 <span>/ year</span></div></div>
+      <div class="fee-body">
+        <ul class="fee-list">
+          <li><i class="fas fa-check"></i> Tuition fees included</li>
+          <li><i class="fas fa-check"></i> Smart classroom access</li>
+          <li><i class="fas fa-check"></i> Specialised stream labs</li>
+          <li><i class="fas fa-check"></i> Competitive exam coaching</li>
+          <li><i class="fas fa-check"></i> Career counselling</li>
+          <li class="no"><i class="fas fa-times"></i> Transport optional</li>
+        </ul>
+        <a href="#apply" class="btn btn-ghost btn-full">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTS & TIMELINE -->
+<section class="documents" id="documents">
+  <div class="reveal">
+    <div class="sec-tag"><i class="fas fa-folder-open"></i> Documents Required</div>
+    <h2 class="sec-title">Checklist of Documents</h2>
+    <p class="sec-sub" style="margin-bottom:1.5rem">Keep these ready before starting your application.</p>
+    <div class="doc-list">
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-id-card"></i></div><div><h4>Birth Certificate</h4><p>Original + 1 photocopy</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-file-medical"></i></div><div><h4>Aadhaar Card</h4><p>Student &amp; parent copies</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-graduation-cap"></i></div><div><h4>Previous Report Card</h4><p>Last 2 years' mark sheets</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-passport"></i></div><div><h4>Transfer Certificate</h4><p>From previous school (Gr 2+)</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-camera"></i></div><div><h4>Passport Photos</h4><p>4 recent colour photographs</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-home"></i></div><div><h4>Address Proof</h4><p>Utility bill / bank statement</p></div><span class="doc-required must">Required</span></div>
+      <div class="doc-item"><div class="doc-icon"><i class="fas fa-trophy"></i></div><div><h4>Achievement Certificates</h4><p>Sports, music, arts, etc.</p></div><span class="doc-required opt">Optional</span></div>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="sec-tag"><i class="fas fa-calendar-alt"></i> Important Dates</div>
+    <h2 class="sec-title">Admission Timeline</h2>
+    <p class="sec-sub" style="margin-bottom:1.5rem">Key dates for the 2025–26 academic session.</p>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-connector"></div></div><div class="tl-content"><h4>Admission Portal Opens</h4><p>Online applications start accepting submissions for all grades.</p><div class="tl-date"><i class="fas fa-calendar"></i> 1 January 2025</div></div></div>
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot active-dot"><i class="fas fa-star"></i></div><div class="tl-connector"></div></div><div class="tl-content"><h4>Early Bird Deadline</h4><p>Apply before this date to receive a ₹5,000 fee waiver on registration.</p><div class="tl-date"><i class="fas fa-calendar"></i> 15 March 2025</div></div></div>
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot"><i class="fas fa-pencil-alt"></i></div><div class="tl-connector"></div></div><div class="tl-content"><h4>Entrance Assessments</h4><p>On-campus written tests and interaction sessions for Grade 3 and above.</p><div class="tl-date"><i class="fas fa-calendar"></i> 5 – 15 April 2025</div></div></div>
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot"><i class="fas fa-envelope"></i></div><div class="tl-connector"></div></div><div class="tl-content"><h4>Result &amp; Offer Letters</h4><p>Admission results published on the portal. Offer letters dispatched.</p><div class="tl-date"><i class="fas fa-calendar"></i> 25 April 2025</div></div></div>
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot"><i class="fas fa-flag-checkered"></i></div></div><div class="tl-content"><h4>Last Day to Accept Seat</h4><p>Pay registration fee and submit signed documents to confirm enrolment.</p><div class="tl-date"><i class="fas fa-calendar"></i> 31 May 2025</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section class="apply-section" id="apply">
+  <div class="apply-grid">
+    <div class="apply-info reveal">
+      <div class="sec-tag"><i class="fas fa-pen-to-square"></i> Online Application</div>
+      <h2>Apply Online<br>in Minutes</h2>
+      <p>Our 3-step form is simple and quick. You'll receive a confirmation email with your Application ID immediately.</p>
+      <div class="info-points">
+        <div class="info-point"><div class="info-icon"><i class="fas fa-shield-alt"></i></div><div><h4>Secure &amp; Confidential</h4><p>Your data is encrypted and never shared with third parties.</p></div></div>
+        <div class="info-point"><div class="info-icon"><i class="fas fa-bolt"></i></div><div><h4>Instant Confirmation</h4><p>Application ID generated instantly upon successful submission.</p></div></div>
+        <div class="info-point"><div class="info-icon"><i class="fas fa-headset"></i></div><div><h4>Admissions Support</h4><p>Call <strong>+07.08722, 43710</strong> Mon–Sat 9AM–5PM for help.</p></div></div>
+        <div class="info-point"><div class="info-icon"><i class="fas fa-undo"></i></div><div><h4>Save &amp; Resume</h4><p>Your form auto-saves so you can continue anytime.</p></div></div>
+      </div>
+    </div>
+
+    <div class="form-card reveal">
+      <div class="form-tabs" id="formTabs">
+        <div class="form-tab active" data-step="0">1. Student Details</div>
+        <div class="form-tab" data-step="1">2. Parent Details</div>
+        <div class="form-tab" data-step="2">3. Review &amp; Submit</div>
+      </div>
+      <div class="form-body">
+
+        <!-- STEP 0 -->
+        <div class="form-step active" id="step0">
+          <div class="form-section-title"><i class="fas fa-user-graduate"></i> Student Information</div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name <span class="req">*</span></label><input class="form-control" id="fName" type="text" placeholder="e.g. Aryan"/><div class="err-msg">Required</div></div>
+            <div class="form-group"><label>Last Name <span class="req">*</span></label><input class="form-control" id="lName" type="text" placeholder="e.g. Sharma"/><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Date of Birth <span class="req">*</span></label><input class="form-control" id="dob" type="date"/><div class="err-msg">Required</div></div>
+            <div class="form-group"><label>Gender <span class="req">*</span></label><select class="form-control" id="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Applying for Grade <span class="req">*</span></label><select class="form-control" id="grade"><option value="">Select grade</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11 – Science</option><option>Grade 11 – Commerce</option><option>Grade 11 – Arts</option><option>Grade 12 – Science</option><option>Grade 12 – Commerce</option><option>Grade 12 – Arts</option></select><div class="err-msg">Required</div></div>
+            <div class="form-group"><label>Academic Year <span class="req">*</span></label><select class="form-control" id="year"><option value="">Select year</option><option>2025 – 2026</option><option>2026 – 2027</option></select><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group"><label>Previous School Name</label><input class="form-control" type="text" placeholder="Leave blank for Grade 1 fresh admissions"/><div class="form-hint">Leave blank for new Grade 1 enrolments</div></div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group"><label>Special Needs / Medical Conditions</label><textarea class="form-control" rows="3" placeholder="Mention any disability, allergy or medical condition…" style="resize:vertical"></textarea></div>
+          </div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="form-step" id="step1">
+          <div class="form-section-title"><i class="fas fa-user-tie"></i> Parent / Guardian Information</div>
+          <div class="form-row">
+            <div class="form-group"><label>Guardian Name <span class="req">*</span></label><input class="form-control" id="pName" type="text" placeholder="Full name"/><div class="err-msg">Required</div></div>
+            <div class="form-group"><label>Relationship <span class="req">*</span></label><select class="form-control" id="pRel"><option value="">Select</option><option>Father</option><option>Mother</option><option>Guardian</option><option>Other</option></select><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Mobile Number <span class="req">*</span></label><input class="form-control" id="pMobile" type="tel" placeholder="+91 98765 43210"/><div class="err-msg">Required</div></div>
+            <div class="form-group"><label>Email Address <span class="req">*</span></label><input class="form-control" id="pEmail" type="email" placeholder="parent@email.com"/><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group"><label>Residential Address <span class="req">*</span></label><textarea class="form-control" id="pAddr" rows="3" placeholder="House No, Street, City, PIN Code…" style="resize:vertical"></textarea><div class="err-msg">Required</div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Occupation</label><input class="form-control" type="text" placeholder="e.g. Engineer, Business"/></div>
+            <div class="form-group"><label>Alternate Contact</label><input class="form-control" type="tel" placeholder="Optional second number"/></div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group"><label>How did you hear about us?</label><select class="form-control"><option value="">Select source</option><option>Social Media</option><option>Friends / Family</option><option>Newspaper</option><option>School Website</option><option>Online Search</option><option>Other</option></select></div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step" id="step2">
+          <div class="form-section-title"><i class="fas fa-clipboard-check"></i> Review &amp; Submit</div>
+          <div id="reviewBox" style="background:var(--off);border-radius:10px;padding:20px;margin-bottom:20px;font-size:.88rem;line-height:2;color:var(--text)">
+            <em style="color:var(--muted)">Complete previous steps to see a summary here.</em>
+          </div>
+          <label class="check-opt"><input type="checkbox" id="agree1"/> <span>I confirm all information provided is accurate and accept the <a href="#">Terms &amp; Conditions</a>.</span></label>
+          <label class="check-opt"><input type="checkbox" id="agree2"/> <span>I consent to Global Academy contacting me regarding admissions and school updates.</span></label>
+        </div>
+
+        <!-- NAV -->
+        <div class="form-nav" id="formNav">
+          <button class="btn btn-ghost" id="btnPrev" style="visibility:hidden"><i class="fas fa-arrow-left"></i> Back</button>
+          <div class="step-indicator" id="stepDots"></div>
+          <button class="btn btn-gold" id="btnNext">Next <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="form-success" id="formSuccess">
+          <div class="s-icon"><i class="fas fa-check"></i></div>
+          <h3>Application Submitted!</h3>
+          <p>Thank you for applying to Global Academy. A confirmation has been sent to your email.</p>
+          <div class="app-id-box" id="appIdBox">GA-2025-00000</div>
+          <p>Keep this Application ID for your records. Our team will contact you within 3 working days.</p>
+          <br>
+          <a href="global-academy.html" class="btn btn-navy"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div style="text-align:center" class="reveal">
+      <div class="sec-tag"><i class="fas fa-question-circle"></i> FAQs</div>
+      <h2 class="sec-title">Frequently Asked Questions</h2>
+      <p class="sec-sub">Everything you need to know about admissions at Global Academy.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item open"><div class="faq-q"><span>What is the minimum age for admission to Grade 1?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>The child must have completed 6 years of age as of 31st March of the admission year. This follows CBSE guidelines for age eligibility.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Is there an entrance test for all grades?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>Grades 1 and 2 have an informal interaction session. For Grades 3 and above, a written aptitude test in English and Mathematics is conducted on campus.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Can I apply for mid-year admission?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>Mid-year admissions are considered on a case-by-case basis subject to seat availability. Please contact the admissions office directly for assistance.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>What streams are available in Grade 11?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>We offer three streams: Science (PCM / PCB), Commerce, and Humanities (Arts). Stream allocation is based on Grade 10 board results and student preference.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Are scholarships or fee concessions available?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>Yes! We offer merit-based scholarships for students scoring above 90% in their previous grade. Sibling discounts of 10% are also available.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>How can I track my application status?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>Once submitted, you'll receive an Application ID by email. Use this ID on our website's "Track Application" page or call our admissions helpline.</p></div></div>
+      <div class="faq-item"><div class="faq-q"><span>Is school transport available?</span><i class="fas fa-chevron-down"></i></div><div class="faq-a"><p>Yes, we operate a GPS-tracked bus service covering major city areas. Transport fees are charged separately. Routes and schedules are shared upon enrolment.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Still Have Questions? We're Here to Help.</h2>
+  <p>Our admissions team is available Monday to Saturday, 9AM – 5PM.</p>
+  <div class="cta-btns">
+    <a href="tel:+0708722437" class="btn btn-gold btn-lg"><i class="fas fa-phone-alt"></i> Call Admissions</a>
+    <a href="mailto:admissions@globalacademy.edu" class="btn btn-outline"><i class="fas fa-envelope"></i> Email Us</a>
+    <a href="#apply" class="btn btn-outline"><i class="fas fa-pen"></i> Apply Online</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><h3>Global Academy</h3><p>Empowering minds and building future leaders through quality education, discipline, and innovation since 2005.</p></div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html#about">About Us</a></li><li><a href="admission.html">Admissions</a></li><li><a href="faculty.html">Faculty</a></li></ul></div>
+    <div class="footer-col"><h4>Admissions</h4><ul><li><a href="#process">How to Apply</a></li><li><a href="#fees">Fee Structure</a></li><li><a href="#documents">Documents</a></li><li><a href="#faq">FAQs</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">info@globalacademy.edu</a></li><li><a href="#">+07.08722, 43710</a></li><li><a href="#">Pay Fees Online</a></li><li><a href="index.html#contact">Find Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">&copy; 2025 Global Academy. All rights reserved.</div>
+</footer>
+<a href="https://wa.me/0708722437" class="whatsapp-fab"><i class="fab fa-whatsapp"></i></a>
+
+<!-- ============================================================
+     JAVASCRIPT SECTION
+     ============================================================ -->
+<script>
+  /* ── Mobile Menu ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    const sp = hamburger.querySelectorAll('span');
+    const o = mobileMenu.classList.contains('open');
+    sp[0].style.transform = o ? 'rotate(45deg) translate(5px,5px)' : '';
+    sp[1].style.opacity   = o ? '0' : '';
+    sp[2].style.transform = o ? 'rotate(-45deg) translate(5px,-5px)' : '';
+  });
+
+  /* ── Scroll Reveal ── */
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+      setTimeout(() => entry.target.classList.add('in'), siblings.indexOf(entry.target) * 110);
+      revObs.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+  /* ── Stats Counter ── */
+  function countUp(el, target, sfx) {
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / (1600 / 16)));
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = cur + sfx;
+      if (cur >= target) clearInterval(t);
+    }, 16);
+  }
+  const statsObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('.val').forEach(el => {
+        countUp(el, parseInt(el.dataset.target), el.dataset.sfx || '+');
+      });
+      statsObs.disconnect();
+    });
+  }, { threshold: 0.5 });
+  const sb = document.querySelector('.stats-bar');
+  if (sb) statsObs.observe(sb);
+
+  /* ── FAQ Accordion ── */
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ── Multi-Step Form ── */
+  let cur = 0;
+  const STEPS = 3;
+  const steps    = document.querySelectorAll('.form-step');
+  const tabs     = document.querySelectorAll('.form-tab');
+  const btnNext  = document.getElementById('btnNext');
+  const btnPrev  = document.getElementById('btnPrev');
+  const dotsWrap = document.getElementById('stepDots');
+
+  // Build dots
+  for (let i = 0; i < STEPS; i++) {
+    const d = document.createElement('button');
+    d.className = 'step-dot';
+    d.addEventListener('click', () => { if (i <= cur) goTo(i); });
+    dotsWrap.appendChild(d);
+  }
+
+  function refreshUI() {
+    steps.forEach((s, i) => s.classList.toggle('active', i === cur));
+    tabs.forEach((t, i)  => t.classList.toggle('active', i === cur));
+    const dots = dotsWrap.querySelectorAll('.step-dot');
+    dots.forEach((d, i) => {
+      d.className = 'step-dot' + (i === cur ? ' cur' : i < cur ? ' done-dot' : '');
+    });
+    btnPrev.style.visibility = cur === 0 ? 'hidden' : 'visible';
+    btnNext.innerHTML = cur === STEPS - 1
+      ? '<i class="fas fa-paper-plane"></i> Submit Application'
+      : 'Next <i class="fas fa-arrow-right"></i>';
+    if (cur === STEPS - 1) buildReview();
+  }
+
+  function required(step) {
+    const fields = {
+      0: ['fName','lName','dob','gender','grade','year'],
+      1: ['pName','pRel','pMobile','pEmail','pAddr'],
+      2: []
+    };
+    let ok = true;
+    fields[step].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || el.value.trim()) return;
+      el.classList.add('error');
+      el.addEventListener('input', () => el.classList.remove('error'), { once: true });
+      ok = false;
+    });
+    return ok;
+  }
+
+  function buildReview() {
+    const v = id => document.getElementById(id)?.value || '—';
+    document.getElementById('reviewBox').innerHTML =
+      `<strong style="color:var(--navy)">Student</strong><br>
+       ${v('fName')} ${v('lName')} &nbsp;·&nbsp; DOB: ${v('dob')} &nbsp;·&nbsp; ${v('gender')}<br>
+       Grade: <strong>${v('grade')}</strong> &nbsp;·&nbsp; Year: ${v('year')}<br><br>
+       <strong style="color:var(--navy)">Parent / Guardian</strong><br>
+       ${v('pName')} (${v('pRel')})<br>
+       📞 ${v('pMobile')} &nbsp;·&nbsp; ✉ ${v('pEmail')}<br>
+       📍 ${v('pAddr')}`;
+  }
+
+  function goTo(n) {
+    cur = n;
+    refreshUI();
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  btnNext.addEventListener('click', () => {
+    if (!required(cur)) return;
+    if (cur < STEPS - 1) { goTo(cur + 1); return; }
+    // Submit
+    const a1 = document.getElementById('agree1');
+    const a2 = document.getElementById('agree2');
+    if (!a1.checked || !a2.checked) { alert('Please tick both declarations before submitting.'); return; }
+    const id = 'GA-2025-' + Math.floor(10000 + Math.random() * 90000);
+    document.getElementById('appIdBox').textContent = id;
+    // hide form parts, show success
+    steps.forEach(s => s.style.display = 'none');
+    document.getElementById('formNav').style.display = 'none';
+    document.querySelectorAll('.form-tab').forEach(t => t.style.display = 'none');
+    document.getElementById('formSuccess').style.display = 'block';
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  btnPrev.addEventListener('click', () => { if (cur > 0) goTo(cur - 1); });
+  tabs.forEach((t, i) => t.addEventListener('click', () => { if (i <= cur) goTo(i); }));
+
+  refreshUI();
+</script>
+</body>
+</html>

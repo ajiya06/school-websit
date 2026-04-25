@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty – Global Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- ============================================================
+     CSS SECTION
+     ============================================================ -->
+<style>
+  /* ---- Design Tokens ---- */
+  :root {
+    --navy:       #1a2340;
+    --navy-mid:   #253060;
+    --navy-light: #2d3f6e;
+    --gold:       #e8a020;
+    --gold-dark:  #c8870a;
+    --gold-pale:  #fef3e2;
+    --white:      #ffffff;
+    --off-white:  #f7f8fc;
+    --border:     #e5e7eb;
+    --text:       #1e2535;
+    --muted:      #6b7280;
+    --radius:     12px;
+    --shadow-sm:  0 2px 10px rgba(0,0,0,0.07);
+    --shadow-md:  0 8px 32px rgba(0,0,0,0.12);
+    --shadow-lg:  0 16px 48px rgba(0,0,0,0.16);
+  }
+
+  /* ---- Reset ---- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+
+  /* ---- Utility ---- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 24px; border-radius: 6px;
+    font-weight: 600; font-size: 0.88rem; cursor: pointer;
+    transition: all 0.25s; border: 2px solid transparent;
+  }
+  .btn-gold  { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: var(--gold-dark); transform: translateY(-1px); }
+  .btn-outline { background: transparent; border-color: var(--white); color: var(--white); }
+  .btn-outline:hover { background: rgba(255,255,255,.15); }
+  .btn-navy  { background: var(--navy); color: var(--white); }
+  .btn-navy:hover { background: var(--navy-light); }
+  .btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold-dark); }
+
+  /* ============================================================
+     NAVBAR
+     ============================================================ */
+  .navbar {
+    position: sticky; top: 0; z-index: 1000;
+    background: var(--white);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .navbar-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700; color: var(--navy);
+  }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: var(--navy); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-size: 1rem;
+  }
+  .navbar-links { display: flex; gap: 26px; align-items: center; }
+  .navbar-links a { font-size: 1rem; font-weight: 700; color: var(--text); transition: color 0.2s; font-family: sans-serif; }
+  .navbar-links a:hover, .navbar-links a.active { color: var(--gold-dark); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: 0.3s; }
+  .mobile-menu {
+    display: none; flex-direction: column;
+    background: var(--white); box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    padding: 16px 5%; gap: 14px;
+    position: absolute; top: 64px; left: 0; right: 0; z-index: 999;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-weight: 500; color: var(--text); font-size: 1rem; }
+
+  /* ============================================================
+     HERO BANNER
+     ============================================================ */
+  .faculty-hero {
+    position: relative;
+    background: var(--navy);
+    padding: 90px 5% 80px;
+    overflow: hidden;
+    text-align: center;
+  }
+  /* geometric decoration */
+  .faculty-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(232,160,32,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 20% 30%, rgba(45,63,110,0.6) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-dots {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  /* diagonal gold stripe */
+  .faculty-hero::after {
+    content: '';
+    position: absolute;
+    width: 6px; height: 200%;
+    background: var(--gold);
+    opacity: 0.18;
+    top: -50%; right: 22%;
+    transform: rotate(18deg);
+    pointer-events: none;
+  }
+  .hero-breadcrumb {
+    position: relative; z-index: 2;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    margin-bottom: 18px;
+    background: rgba(255,255,255,0.07);
+    padding: 5px 14px; border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-breadcrumb a { color: var(--gold); }
+  .hero-breadcrumb i { font-size: 0.65rem; }
+  .faculty-hero h1 {
+    position: relative; z-index: 2;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    animation: heroUp 0.7s both;
+  }
+  .faculty-hero h1 span { color: var(--gold); font-style: italic; }
+  .faculty-hero p {
+    position: relative; z-index: 2;
+    color: rgba(255,255,255,0.62);
+    font-size: 1rem; max-width: 520px;
+    margin: 0 auto 32px;
+    animation: heroUp 0.85s both;
+  }
+  .hero-stats-row {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+    animation: heroUp 1s both;
+  }
+  .h-stat { text-align: center; }
+  .h-stat .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--gold); line-height: 1;
+  }
+  .h-stat .lbl { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+  /* divider between stats */
+  .h-stat + .h-stat { border-left: 1px solid rgba(255,255,255,0.12); padding-left: 48px; }
+
+  @keyframes heroUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================================
+     FILTER BAR
+     ============================================================ */
+  .filter-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    position: sticky; top: 64px; z-index: 900;
+    box-shadow: var(--shadow-sm);
+    min-height: 60px;
+  }
+  .filter-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    padding: 10px 0;
+  }
+  .filter-tab {
+    padding: 7px 18px;
+    border-radius: 99px;
+    font-size: 0.82rem; font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: transparent; color: var(--muted);
+    transition: all 0.22s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-tab:hover { border-color: var(--gold); color: var(--gold-dark); }
+  .filter-tab.active {
+    background: var(--navy); border-color: var(--navy);
+    color: var(--white);
+  }
+  .search-wrap {
+    position: relative;
+    display: flex; align-items: center;
+  }
+  .search-wrap i {
+    position: absolute; left: 12px;
+    color: var(--muted); font-size: 0.85rem;
+    pointer-events: none;
+  }
+  .search-input {
+    padding: 8px 14px 8px 36px;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: var(--off-white);
+  }
+  .search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(232,160,32,0.12); }
+
+  /* ============================================================
+     FACULTY GRID
+     ============================================================ */
+  .faculty-section {
+    padding: 60px 5%;
+    background: var(--off-white);
+    min-height: 60vh;
+  }
+  .dept-label {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px;
+  }
+  .dept-label span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; color: var(--navy); font-weight: 700;
+  }
+  .dept-label::after {
+    content: ''; flex: 1;
+    height: 1px; background: var(--border);
+  }
+  .faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+
+  /* ---- Faculty Card ---- */
+  .f-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: none;
+  }
+  .f-card.visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
+  }
+  .f-card:hover { transform: translateY(-6px) !important; box-shadow: var(--shadow-lg); }
+
+  /* top gold accent bar */
+  .f-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .f-card:hover::before { transform: scaleX(1); }
+
+  .f-card-img {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+  }
+  .f-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s;
+    filter: brightness(0.92);
+  }
+  .f-card:hover .f-card-img img { transform: scale(1.06); filter: brightness(1); }
+  .f-card-dept-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(26,35,64,0.85);
+    color: var(--gold);
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px;
+    padding: 4px 10px; border-radius: 99px;
+    backdrop-filter: blur(4px);
+    text-transform: uppercase;
+  }
+  .f-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,35,64,0.85) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 16px;
+    gap: 10px;
+  }
+  .f-card:hover .f-card-overlay { opacity: 1; }
+  .overlay-links a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    color: var(--white); font-size: 0.88rem;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .overlay-links a:hover { background: var(--gold); color: var(--navy); }
+  .overlay-links { display: flex; gap: 8px; }
+
+  .f-card-body { padding: 18px 20px 20px; }
+  .f-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem; color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .f-card-role {
+    font-size: 0.8rem; color: var(--gold-dark);
+    font-weight: 600; margin-bottom: 8px;
+  }
+  .f-card-body p {
+    font-size: 0.82rem; color: var(--muted);
+    line-height: 1.55; margin-bottom: 14px;
+  }
+  .f-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.72rem; font-weight: 600;
+    padding: 3px 10px; border-radius: 99px;
+    background: var(--gold-pale); color: var(--gold-dark);
+    border: 1px solid rgba(232,160,32,0.25);
+  }
+  .f-card-footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .rating { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--muted); }
+  .rating i { color: var(--gold); font-size: 0.75rem; }
+  .exp-badge {
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--navy-light); background: var(--off-white);
+    padding: 3px 10px; border-radius: 99px;
+    border: 1px solid var(--border);
+  }
+
+  /* no results */
+  .no-results {
+    text-align: center; padding: 60px 20px;
+    display: none; grid-column: 1/-1;
+  }
+  .no-results i { font-size: 3rem; color: var(--border); margin-bottom: 16px; }
+  .no-results p { color: var(--muted); font-size: 0.95rem; }
+
+  /* ============================================================
+     LEADERSHIP STRIP
+     ============================================================ */
+  .leadership {
+    padding: 70px 5%;
+    background: var(--navy);
+    text-align: center;
+  }
+  .leadership h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--white); margin-bottom: 8px;
+  }
+  .leadership > p { color: rgba(255,255,255,.55); font-size: 0.95rem; margin-bottom: 44px; }
+  .lead-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .lead-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    padding: 32px 20px;
+    transition: background 0.3s, transform 0.3s;
+    opacity: 0; transform: translateY(20px);
+  }
+  .lead-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s, transform 0.6s, background 0.3s; }
+  .lead-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px) !important; }
+  .lead-avatar {
+    width: 82px; height: 82px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    margin: 0 auto 16px;
+  }
+  .lead-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--white); margin-bottom: 5px; }
+  .lead-card .role { font-size: 0.8rem; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .lead-card p { font-size: 0.82rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+  /* ============================================================
+     ACHIEVEMENTS BANNER
+     ============================================================ */
+  .achievements {
+    background: var(--gold);
+    padding: 48px 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .ach-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--navy); margin-bottom: 6px;
+  }
+  .ach-text p { font-size: 0.92rem; color: var(--navy); opacity: 0.75; }
+  .ach-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+  .ach-stat { text-align: center; }
+  .ach-stat .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1;
+  }
+  .ach-stat .lbl { font-size: 0.75rem; color: rgba(26,35,64,0.65); margin-top: 3px; }
+
+  /* ============================================================
+     JOIN CTA
+     ============================================================ */
+  .join-cta {
+    padding: 80px 5%;
+    background: var(--off-white);
+    text-align: center;
+  }
+  .join-cta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--navy); margin-bottom: 10px;
+  }
+  .join-cta p { color: var(--muted); max-width: 480px; margin: 0 auto 28px; font-size: 0.95rem; }
+  .join-cta .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,.7);
+    padding: 40px 5% 24px;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 32px;
+  }
+  .footer-brand h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--white); margin-bottom:10px; }
+  .footer-brand p { font-size:0.88rem; line-height:1.7; }
+  .footer-col h4 { color:var(--white); font-weight:600; margin-bottom:14px; font-size:0.92rem; }
+  .footer-col ul li { margin-bottom:8px; }
+  .footer-col ul li a { font-size:0.88rem; color:rgba(255,255,255,.6); transition:color 0.2s; }
+  .footer-col ul li a:hover { color:var(--gold); }
+  .footer-bottom {
+    border-top:1px solid rgba(255,255,255,.1);
+    padding-top:20px; text-align:center;
+    font-size:0.82rem; color:rgba(255,255,255,.35);
+  }
+
+  /* WhatsApp FAB */
+  .whatsapp-fab {
+    position:fixed; bottom:24px; right:24px; z-index:999;
+    width:52px; height:52px; background:#25d366; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-size:1.5rem;
+    box-shadow:0 4px 16px rgba(37,211,102,.4);
+    transition:transform 0.25s; cursor:pointer;
+  }
+  .whatsapp-fab:hover { transform:scale(1.1); }
+
+  /* ============================================================
+     MODAL
+     ============================================================ */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:2000;
+    background:rgba(10,14,28,0.72);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.3s;
+    backdrop-filter:blur(4px);
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal {
+    background:var(--white); border-radius:20px;
+    max-width:640px; width:100%;
+    overflow:hidden;
+    transform:scale(0.93) translateY(16px);
+    transition:transform 0.3s;
+    box-shadow:0 24px 80px rgba(0,0,0,0.28);
+  }
+  .modal-overlay.open .modal { transform:scale(1) translateY(0); }
+  .modal-header {
+    position:relative; height:220px; overflow:hidden;
+    background: linear-gradient(135deg,var(--navy-mid),var(--navy));
+  }
+  .modal-header img { width:100%; height:100%; object-fit:cover; opacity:0.55; }
+  .modal-header-overlay {
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end; padding:24px;
+    background:linear-gradient(to top,rgba(26,35,64,.9) 0%,transparent 60%);
+  }
+  .modal-header-info { flex:1; }
+  .modal-header-info h2 { font-family:'Playfair Display',serif; color:var(--white); font-size:1.5rem; }
+  .modal-header-info .role { color:var(--gold); font-size:0.85rem; font-weight:600; margin-top:2px; }
+  .modal-close {
+    position:absolute; top:16px; right:16px;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.18); border:none;
+    color:var(--white); font-size:1rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:background 0.2s; backdrop-filter:blur(4px);
+  }
+  .modal-close:hover { background:rgba(255,255,255,.32); }
+  .modal-body { padding:28px 32px 32px; }
+  .modal-bio { font-size:0.9rem; color:var(--muted); line-height:1.7; margin-bottom:20px; }
+  .modal-meta {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:14px; margin-bottom:20px;
+  }
+  .meta-item { display:flex; align-items:flex-start; gap:10px; }
+  .meta-icon {
+    width:34px; height:34px; border-radius:8px;
+    background:var(--gold-pale); color:var(--gold-dark);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.85rem; flex-shrink:0;
+  }
+  .meta-item .key { font-size:0.72rem; color:var(--muted); }
+  .meta-item .val2 { font-size:0.88rem; font-weight:600; color:var(--navy); }
+  .modal-subjects h4 { font-size:0.88rem; font-weight:700; color:var(--navy); margin-bottom:10px; }
+  .modal-tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .modal-footer { padding:16px 32px 28px; display:flex; gap:10px; }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width:900px) {
+    .navbar-links,.navbar-actions .btn-gold{display:none}
+    .hamburger{display:flex}
+    .filter-bar{top:64px}
+    .footer-top{grid-template-columns:1fr 1fr;gap:24px}
+    .achievements{flex-direction:column;text-align:center}
+    .ach-stats{justify-content:center}
+  }
+  @media (max-width:600px) {
+    .hero-stats-row .h-stat+.h-stat{border-left:none;padding-left:0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px}
+    .hero-stats-row{flex-direction:column;gap:16px}
+    .modal-meta{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr}
+    .lead-grid{grid-template-columns:1fr 1fr}
+    .modal-footer{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HTML SECTION
+     ============================================================ -->
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+    Global Academy
+  </a>
+  <ul class="navbar-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About Us</a></li>
+    <li><a href="admission">Admissions</a></li>
+    <li><a href="index.html#programs">Academics</a></li>
+    <li><a href="faculty.html" class="active">Faculty</a></li>
+    <li><a href="campus-life.html">Campus Life</a></li>
+    <li><a href="index.html#contact">Contact Us</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <a href="#" class="btn btn-gold"><i class="fas fa-credit-card"></i> Pay Fees</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="index.html#about">About Us</a>
+  <a href="index.html#programs">Academics</a>
+  <a href="faculty.html">Faculty</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="#" class="btn btn-gold" style="text-align:center">Pay Fees</a>
+</div>
+
+<!-- HERO -->
+<section class="faculty-hero">
+  <div class="hero-dots"></div>
+  <div class="hero-breadcrumb">
+    <a href="global-academy.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Faculty</span>
+  </div>
+  <h1>Meet Our <span>Exceptional</span><br>Faculty</h1>
+  <p>Dedicated educators, renowned researchers, and passionate mentors — shaping the leaders of tomorrow.</p>
+  <div class="hero-stats-row">
+    <div class="h-stat"><div class="val" data-target="52">0</div><div class="lbl">Expert Faculty</div></div>
+    <div class="h-stat"><div class="val" data-target="18">0</div><div class="lbl">Departments</div></div>
+    <div class="h-stat"><div class="val" data-target="95">0</div><div class="lbl">% Pass Rate</div></div>
+    <div class="h-stat"><div class="val" data-target="30">0</div><div class="lbl">Avg. Years Experience</div></div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-dept="all">All Departments</button>
+    <button class="filter-tab" data-dept="science">Science</button>
+    <button class="filter-tab" data-dept="mathematics">Mathematics</button>
+    <button class="filter-tab" data-dept="humanities">Humanities</button>
+    <button class="filter-tab" data-dept="commerce">Commerce</button>
+    <button class="filter-tab" data-dept="languages">Languages</button>
+    <button class="filter-tab" data-dept="sports">Sports &amp; PE</button>
+  </div>
+  <div class="search-wrap">
+    <i class="fas fa-search"></i>
+    <input class="search-input" id="searchInput" type="text" placeholder="Search faculty…"/>
+  </div>
+</div>
+
+<!-- FACULTY GRID -->
+<section class="faculty-section">
+  <div id="facultyContainer">
+    <!-- Science -->
+    <div class="dept-group" data-dept="science">
+      <div class="dept-label"><span>🔬 Science Department</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="science" data-name="Dr. Anjali Mehta"
+          data-role="Head of Science" data-exp="18 Years"
+          data-qual="PhD Physics, IIT Delhi" data-email="anjali@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
+          data-bio="Dr. Anjali Mehta leads the Science Department with distinction. Her research on quantum optics has been published in international journals. She believes in hands-on learning and has equipped our labs with state-of-the-art equipment.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Dr. Anjali Mehta"/>
+            <div class="f-card-dept-badge">Science</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Dr. Anjali Mehta</h3>
+            <div class="f-card-role">Head of Science Department</div>
+            <p>Expert in Physics &amp; Quantum Mechanics with 18+ years of teaching excellence.</p>
+            <div class="f-card-tags"><span class="tag">Physics</span><span class="tag">Research</span><span class="tag">IIT Alumni</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
+            <div class="exp-badge">18 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="science" data-name="Mr. Rajan Sharma"
+          data-role="Senior Chemistry Teacher" data-exp="12 Years"
+          data-qual="M.Sc Chemistry, DU" data-email="rajan@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=400&q=80"
+          data-bio="Mr. Rajan Sharma's classroom is a laboratory of curiosity. His innovative teaching methods make complex chemistry concepts approachable and exciting for every student.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=400&q=80" alt="Mr. Rajan Sharma"/>
+            <div class="f-card-dept-badge">Science</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Rajan Sharma</h3>
+            <div class="f-card-role">Senior Chemistry Teacher</div>
+            <p>Passionate educator with a knack for making organic chemistry intuitive.</p>
+            <div class="f-card-tags"><span class="tag">Chemistry</span><span class="tag">Lab Work</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
+            <div class="exp-badge">12 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="science" data-name="Ms. Priya Nair"
+          data-role="Biology Teacher" data-exp="9 Years"
+          data-qual="M.Sc Biology, BHU" data-email="priya@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80"
+          data-bio="Ms. Priya Nair brings biology to life through field trips, dissections, and multimedia presentations. Her students consistently achieve top scores in board exams.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80" alt="Ms. Priya Nair"/>
+            <div class="f-card-dept-badge">Science</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Ms. Priya Nair</h3>
+            <div class="f-card-role">Biology Teacher</div>
+            <p>Field-based teaching approach that makes biology engaging and real.</p>
+            <div class="f-card-tags"><span class="tag">Biology</span><span class="tag">Ecology</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.8</div>
+            <div class="exp-badge">9 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="science" data-name="Mr. Arun Kapoor"
+          data-role="Computer Science Teacher" data-exp="7 Years"
+          data-qual="B.Tech CS, NIT" data-email="arun@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80"
+          data-bio="Mr. Arun Kapoor teaches programming and AI fundamentals. He has developed the school's coding curriculum and runs after-school hackathons that have won national recognition.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80" alt="Mr. Arun Kapoor"/>
+            <div class="f-card-dept-badge">Science</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Arun Kapoor</h3>
+            <div class="f-card-role">Computer Science Teacher</div>
+            <p>Hackathon enthusiast building the next generation of coders.</p>
+            <div class="f-card-tags"><span class="tag">Python</span><span class="tag">AI/ML</span><span class="tag">Coding</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.6</div>
+            <div class="exp-badge">7 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mathematics -->
+    <div class="dept-group" data-dept="mathematics">
+      <div class="dept-label"><span>📐 Mathematics Department</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="mathematics" data-name="Dr. Suresh Patel"
+          data-role="Head of Mathematics" data-exp="22 Years"
+          data-qual="PhD Mathematics, IISc" data-email="suresh@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+          data-bio="Dr. Suresh Patel has mentored over 200 students who went on to study at IITs and NITs. His problem-solving workshops and Olympiad coaching have put Global Academy on the national map.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Dr. Suresh Patel"/>
+            <div class="f-card-dept-badge">Mathematics</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Dr. Suresh Patel</h3>
+            <div class="f-card-role">Head of Mathematics</div>
+            <p>Olympiad coach and IIT mentor who makes advanced maths accessible.</p>
+            <div class="f-card-tags"><span class="tag">Calculus</span><span class="tag">Olympiad</span><span class="tag">IIT Prep</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div>
+            <div class="exp-badge">22 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="mathematics" data-name="Ms. Kavya Reddy"
+          data-role="Mathematics Teacher" data-exp="8 Years"
+          data-qual="M.Sc Mathematics, TIFR" data-email="kavya@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80"
+          data-bio="Ms. Kavya Reddy specialises in Statistics and Probability. She integrates real-world data into lessons, making abstract concepts tangible for students at all levels.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80" alt="Ms. Kavya Reddy"/>
+            <div class="f-card-dept-badge">Mathematics</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Ms. Kavya Reddy</h3>
+            <div class="f-card-role">Mathematics Teacher</div>
+            <p>Data-driven lessons that connect maths with the real world.</p>
+            <div class="f-card-tags"><span class="tag">Statistics</span><span class="tag">Algebra</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.8</div>
+            <div class="exp-badge">8 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="mathematics" data-name="Mr. Vikram Singh"
+          data-role="Junior Mathematics Teacher" data-exp="4 Years"
+          data-qual="M.Sc Mathematics, JNU" data-email="vikram@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+          data-bio="Mr. Vikram Singh brings energy and creativity to every class. His animated explanations and visual teaching style have drastically improved pass rates in Grades 6-8.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Mr. Vikram Singh"/>
+            <div class="f-card-dept-badge">Mathematics</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Vikram Singh</h3>
+            <div class="f-card-role">Junior Mathematics Teacher</div>
+            <p>Visual teaching style that sparks love for numbers in young minds.</p>
+            <div class="f-card-tags"><span class="tag">Geometry</span><span class="tag">Middle School</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i> 4.4</div>
+            <div class="exp-badge">4 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Humanities -->
+    <div class="dept-group" data-dept="humanities">
+      <div class="dept-label"><span>📚 Humanities Department</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="humanities" data-name="Dr. Meena Joshi"
+          data-role="Head of Humanities" data-exp="20 Years"
+          data-qual="PhD History, JNU" data-email="meena@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80"
+          data-bio="Dr. Meena Joshi has spent two decades turning history into living narrative. Her documentary series on local heritage won a national award, and her students regularly participate in national history competitions.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Dr. Meena Joshi"/>
+            <div class="f-card-dept-badge">Humanities</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Dr. Meena Joshi</h3>
+            <div class="f-card-role">Head of Humanities</div>
+            <p>Award-winning historian who brings the past to vibrant life in every lesson.</p>
+            <div class="f-card-tags"><span class="tag">History</span><span class="tag">Civics</span><span class="tag">Research</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
+            <div class="exp-badge">20 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="humanities" data-name="Mr. Arjun Das"
+          data-role="Geography & Social Studies" data-exp="11 Years"
+          data-qual="M.A Geography, CU" data-email="arjun@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80"
+          data-bio="Mr. Arjun Das uses GIS tools and interactive maps to make Geography a subject students genuinely love. He leads the school's annual eco-geography field trip.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" alt="Mr. Arjun Das"/>
+            <div class="f-card-dept-badge">Humanities</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Arjun Das</h3>
+            <div class="f-card-role">Geography &amp; Social Studies</div>
+            <p>GIS tools and field trips that make the world a classroom.</p>
+            <div class="f-card-tags"><span class="tag">Geography</span><span class="tag">GIS</span><span class="tag">Environment</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
+            <div class="exp-badge">11 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Commerce -->
+    <div class="dept-group" data-dept="commerce">
+      <div class="dept-label"><span>💼 Commerce Department</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="commerce" data-name="Ms. Rekha Gupta"
+          data-role="Head of Commerce" data-exp="16 Years"
+          data-qual="CA, MBA Finance" data-email="rekha@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?w=400&q=80"
+          data-bio="Ms. Rekha Gupta is a Chartered Accountant who chose teaching over corporate life. Her practical, case-study driven approach has produced some of the school's highest board scorers.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?w=400&q=80" alt="Ms. Rekha Gupta"/>
+            <div class="f-card-dept-badge">Commerce</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Ms. Rekha Gupta</h3>
+            <div class="f-card-role">Head of Commerce</div>
+            <p>CA-turned-educator with 16 years of practical finance expertise.</p>
+            <div class="f-card-tags"><span class="tag">Accountancy</span><span class="tag">Finance</span><span class="tag">CA Prep</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
+            <div class="exp-badge">16 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="commerce" data-name="Mr. Sanjay Malhotra"
+          data-role="Business Studies Teacher" data-exp="10 Years"
+          data-qual="MBA Marketing, XLRI" data-email="sanjay@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80"
+          data-bio="Mr. Sanjay Malhotra brings industry experience from marketing and management consulting into the classroom, running live business simulations and entrepreneurship workshops.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="Mr. Sanjay Malhotra"/>
+            <div class="f-card-dept-badge">Commerce</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Sanjay Malhotra</h3>
+            <div class="f-card-role">Business Studies Teacher</div>
+            <p>Industry consultant running live business simulations for students.</p>
+            <div class="f-card-tags"><span class="tag">Marketing</span><span class="tag">Entrepreneurship</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.6</div>
+            <div class="exp-badge">10 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="dept-group" data-dept="languages">
+      <div class="dept-label"><span>🌐 Languages Department</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="languages" data-name="Ms. Sunita Verma"
+          data-role="Senior English Teacher" data-exp="15 Years"
+          data-qual="M.A English Literature, DU" data-email="sunita@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80"
+          data-bio="Ms. Sunita Verma's literary analysis sessions are celebrated school-wide. She founded the annual school magazine and has mentored students to national essay writing championships.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Ms. Sunita Verma"/>
+            <div class="f-card-dept-badge">Languages</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Ms. Sunita Verma</h3>
+            <div class="f-card-role">Senior English Teacher</div>
+            <p>Literary storyteller who runs the school magazine and debate club.</p>
+            <div class="f-card-tags"><span class="tag">English Lit</span><span class="tag">Creative Writing</span><span class="tag">Debate</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
+            <div class="exp-badge">15 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="languages" data-name="Mr. Ramesh Kumar"
+          data-role="Hindi Teacher" data-exp="13 Years"
+          data-qual="M.A Hindi, BHU" data-email="ramesh@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=400&q=80"
+          data-bio="Mr. Ramesh Kumar is a passionate scholar of Hindi literature who has authored two poetry collections. His dramatic oral readings make classical texts come alive for students.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=400&q=80" alt="Mr. Ramesh Kumar"/>
+            <div class="f-card-dept-badge">Languages</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Ramesh Kumar</h3>
+            <div class="f-card-role">Hindi Teacher</div>
+            <p>Published poet and Hindi literature scholar with 13 years of teaching.</p>
+            <div class="f-card-tags"><span class="tag">Hindi</span><span class="tag">Poetry</span><span class="tag">Literature</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
+            <div class="exp-badge">13 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sports -->
+    <div class="dept-group" data-dept="sports">
+      <div class="dept-label"><span>⚽ Sports &amp; Physical Education</span></div>
+      <div class="faculty-grid">
+
+        <div class="f-card" data-dept="sports" data-name="Mr. Deepak Thakur"
+          data-role="Head of Physical Education" data-exp="14 Years"
+          data-qual="M.P.Ed, NIS Patiala" data-email="deepak@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80"
+          data-bio="Mr. Deepak Thakur is a former national-level footballer who now channels his passion into coaching students. Under his leadership the school has won inter-district sports meets consecutively for five years.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80" alt="Mr. Deepak Thakur"/>
+            <div class="f-card-dept-badge">Sports</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Mr. Deepak Thakur</h3>
+            <div class="f-card-role">Head of Physical Education</div>
+            <p>Former national footballer coaching champions for the last 14 years.</p>
+            <div class="f-card-tags"><span class="tag">Football</span><span class="tag">Athletics</span><span class="tag">Fitness</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
+            <div class="exp-badge">14 Yrs</div>
+          </div>
+        </div>
+
+        <div class="f-card" data-dept="sports" data-name="Ms. Pooja Arora"
+          data-role="Yoga & Wellness Coach" data-exp="6 Years"
+          data-qual="Certified Yoga Instructor, SVYASA" data-email="pooja@globalacademy.edu"
+          data-img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80"
+          data-bio="Ms. Pooja Arora introduced the school's daily morning yoga programme, which has led to measurable improvements in student focus and well-being according to annual surveys.">
+          <div class="f-card-img">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" alt="Ms. Pooja Arora"/>
+            <div class="f-card-dept-badge">Sports</div>
+            <div class="f-card-overlay"><div class="overlay-links"><a href="#"><i class="fas fa-envelope"></i></a><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fas fa-user"></i></a></div></div>
+          </div>
+          <div class="f-card-body">
+            <h3>Ms. Pooja Arora</h3>
+            <div class="f-card-role">Yoga &amp; Wellness Coach</div>
+            <p>Certified instructor who started the school's acclaimed morning yoga programme.</p>
+            <div class="f-card-tags"><span class="tag">Yoga</span><span class="tag">Wellness</span><span class="tag">Mindfulness</span></div>
+          </div>
+          <div class="f-card-footer">
+            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.8</div>
+            <div class="exp-badge">6 Yrs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- No results -->
+    <div id="noResults" class="no-results" style="display:none">
+      <i class="fas fa-search"></i>
+      <p>No faculty members found. Try a different search or filter.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="leadership">
+  <h2>School Leadership</h2>
+  <p>Visionaries guiding Global Academy towards excellence.</p>
+  <div class="lead-grid">
+    <div class="lead-card">
+      <img class="lead-avatar" src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?w=200&q=80" alt="Principal"/>
+      <h3>Mr. Harish Bhatt</h3>
+      <div class="role">Principal</div>
+      <p>30 years of educational leadership. Former CBSE board member committed to holistic development.</p>
+    </div>
+    <div class="lead-card">
+      <img class="lead-avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&q=80" alt="Vice Principal"/>
+      <h3>Mr. Rajiv Tiwari</h3>
+      <div class="role">Vice Principal</div>
+      <p>Academic strategist who has modernised the curriculum and introduced smart classrooms.</p>
+    </div>
+    <div class="lead-card">
+      <img class="lead-avatar" src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200&q=80" alt="Dean"/>
+      <h3>Ms. Anita Srivastava</h3>
+      <div class="role">Dean of Academics</div>
+      <p>Driving academic excellence, student welfare programmes, and faculty development initiatives.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS BANNER -->
+<section class="achievements">
+  <div class="ach-text">
+    <h2>Faculty Achievements</h2>
+    <p>Our teachers are award-winners, authors, and researchers.</p>
+  </div>
+  <div class="ach-stats">
+    <div class="ach-stat"><div class="val">12</div><div class="lbl">National Awards</div></div>
+    <div class="ach-stat"><div class="val">34</div><div class="lbl">Published Papers</div></div>
+    <div class="ach-stat"><div class="val">8</div><div class="lbl">Books Authored</div></div>
+    <div class="ach-stat"><div class="val">100%</div><div class="lbl">B.Ed / M.Ed Qualified</div></div>
+  </div>
+</section>
+
+<!-- JOIN CTA -->
+<section class="join-cta">
+  <h2>Join Our Faculty</h2>
+  <p>We are always looking for passionate educators to join the Global Academy family.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn btn-gold"><i class="fas fa-paper-plane"></i> Apply Now</a>
+    <a href="global-academy.html#contact" class="btn btn-ghost"><i class="fas fa-envelope"></i> Contact Us</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>Global Academy</h3>
+      <p>Empowering minds and building future leaders through quality education, discipline, and innovation since 2005.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="global-academy.html">Home</a></li><li><a href="global-academy.html#about">About Us</a></li><li><a href="global-academy.html#programs">Academics</a></li><li><a href="faculty.html">Faculty</a></li></ul></div>
+    <div class="footer-col"><h4>Programs</h4><ul><li><a href="#">Primary School</a></li><li><a href="#">Secondary School</a></li><li><a href="#">Senior Secondary</a></li><li><a href="#">Extra-Curricular</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">info@globalacademy.edu</a></li><li><a href="#">+07.08722, 43710</a></li><li><a href="global-academy.html#fees">Pay Fees Online</a></li><li><a href="global-academy.html#contact">Find Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">&copy; 2024 Global Academy. All rights reserved.</div>
+</footer>
+
+<a href="https://wa.me/0708722437" class="whatsapp-fab" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<!-- FACULTY DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <img id="mImg" src="" alt=""/>
+      <div class="modal-header-overlay">
+        <div class="modal-header-info">
+          <h2 id="mName"></h2>
+          <div class="role" id="mRole"></div>
+        </div>
+      </div>
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-bio" id="mBio"></p>
+      <div class="modal-meta">
+        <div class="meta-item"><div class="meta-icon"><i class="fas fa-briefcase"></i></div><div><div class="key">Experience</div><div class="val2" id="mExp"></div></div></div>
+        <div class="meta-item"><div class="meta-icon"><i class="fas fa-graduation-cap"></i></div><div><div class="key">Qualification</div><div class="val2" id="mQual"></div></div></div>
+        <div class="meta-item"><div class="meta-icon"><i class="fas fa-envelope"></i></div><div><div class="key">Email</div><div class="val2" id="mEmail"></div></div></div>
+        <div class="meta-item"><div class="meta-icon"><i class="fas fa-building"></i></div><div><div class="key">Department</div><div class="val2" id="mDept"></div></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-gold"><i class="fas fa-envelope"></i> Send Email</a>
+      <a href="#" class="btn btn-ghost"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT SECTION
+     ============================================================ -->
+<script>
+  /* ---- Mobile Menu ---- */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    const sp = hamburger.querySelectorAll('span');
+    if (mobileMenu.classList.contains('open')) {
+      sp[0].style.transform = 'rotate(45deg) translate(5px,5px)';
+      sp[1].style.opacity   = '0';
+      sp[2].style.transform = 'rotate(-45deg) translate(5px,-5px)';
+    } else {
+      sp.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  });
+
+  /* ---- Hero Counter Animation ---- */
+  function countUp(el, target, suffix = '') {
+    const duration = 1800;
+    const step = Math.max(1, Math.ceil(target / (duration / 16)));
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  }
+  const heroObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.h-stat .val').forEach(el => {
+          const t = parseInt(el.dataset.target);
+          const s = el.closest('.h-stat').querySelector('.lbl').textContent.includes('%') ? '%' : '+';
+          countUp(el, t, s);
+        });
+        heroObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.4 });
+  const heroStats = document.querySelector('.hero-stats-row');
+  if (heroStats) heroObserver.observe(heroStats);
+
+  /* ---- Scroll Reveal ---- */
+  const revealEls = document.querySelectorAll('.f-card, .lead-card');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach((entry, _, all) => {
+      if (entry.isIntersecting) {
+        const siblings = [...entry.target.parentElement.children];
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => entry.target.classList.add('visible'), idx * 100);
+        revObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => revObs.observe(el));
+
+  /* ---- Department Filter ---- */
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const deptGroups = document.querySelectorAll('.dept-group');
+  const allCards   = document.querySelectorAll('.f-card');
+  const searchInput = document.getElementById('searchInput');
+  const noResults   = document.getElementById('noResults');
+
+  function applyFilters() {
+    const activeDept = document.querySelector('.filter-tab.active').dataset.dept;
+    const query = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    deptGroups.forEach(group => {
+      const dept = group.dataset.dept;
+      const deptMatch = activeDept === 'all' || dept === activeDept;
+      const cards = group.querySelectorAll('.f-card');
+      let groupVisible = 0;
+
+      cards.forEach(card => {
+        const nameMatch = card.dataset.name.toLowerCase().includes(query);
+        const roleMatch = card.dataset.role.toLowerCase().includes(query);
+        const show = deptMatch && (query === '' || nameMatch || roleMatch);
+        card.style.display = show ? '' : 'none';
+        if (show) { groupVisible++; visibleCount++; }
+      });
+
+      group.style.display = groupVisible > 0 ? '' : 'none';
+    });
+
+    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+
+  /* ---- Faculty Card → Modal ---- */
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose   = document.getElementById('modalClose');
+
+  function openModal(card) {
+    document.getElementById('mImg').src    = card.dataset.img;
+    document.getElementById('mName').textContent = card.dataset.name;
+    document.getElementById('mRole').textContent = card.dataset.role;
+    document.getElementById('mBio').textContent  = card.dataset.bio;
+    document.getElementById('mExp').textContent  = card.dataset.exp;
+    document.getElementById('mQual').textContent = card.dataset.qual;
+    document.getElementById('mEmail').textContent= card.dataset.email;
+    document.getElementById('mDept').textContent =
+      card.dataset.dept.charAt(0).toUpperCase() + card.dataset.dept.slice(1);
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  allCards.forEach(card => card.addEventListener('click', () => openModal(card)));
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ---- Sticky filter bar shadow ---- */
+  const filterBar = document.querySelector('.filter-bar');
+  window.addEventListener('scroll', () => {
+    filterBar.style.boxShadow = window.scrollY > 120
+      ? '0 4px 20px rgba(0,0,0,0.1)'
+      : '0 2px 10px rgba(0,0,0,0.07)';
+  }, { passive: true });
+</script>
+
+</body>
+</html>
